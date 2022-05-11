@@ -1,2 +1,3 @@
-# zero-base
-Study for programming
+# 제로베이스 백엔드 스쿨 2기
+* 공부한 내용들 정리
+* 클론 코딩
