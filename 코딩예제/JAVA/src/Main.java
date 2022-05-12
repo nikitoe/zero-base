@@ -1,60 +1,63 @@
-// Java 프로그래밍 - 변수와 자료형_1
+// Java 프로그래밍 - 변수와 자료형_2
 
 public class Main {
     public static void main(String[] args) {
 
-//      1. 변수 사용하기
-        System.out.println("== 변수 사용하기 ==");
-        int age = 10;
-        System.out.println(age);
-        String country = "Korea";
-        System.out.println(country);
-
-
-//      2. 변수 이름 규칙
-        System.out.println("== 변수 이름 규칙 ==");
-//      2-1. 문자, 숫자, _(underscore), $ 사용 가능
-        int banana = 1000;
-        int banana3 = 2000;
-        int _banana = 3000;
-        int $banana = 4000;
-
-        System.out.println($banana);
-        System.out.println("$banana = " + $banana);
-
-//      2-2. 숫자로 시작 X
-//        int 3banna = 1000;
-
-//      2-3. 대소문자 구분
-        int banana5 = 10000;
-        int Banana5 = 20000;
-
-//      2-4. 공백 사용 X
-//        int banana one = 2000;
-        int one_banana = 1000;
-        int oneBanana = 1000;
+//      1. 자료형 - 숫자
+        System.out.println("== 숫자 ==");
+//      1-1. 정수
         
-//      2-5. 예약어 사용 X
-//      예약어 예시: true, false, if, switch, for, continue, break, ...
-        
-//      참고) 한글 사용 가능
+        int intNum = 10;
+        System.out.println("intNum = " + intNum);
+        System.out.println(Integer.MIN_VALUE);
+        System.out.println(Integer.MAX_VALUE);
 
-        int 사과 = 1000;
-        System.out.println(사과);
-        
-//      3. 표기법
-//      3-1. 카멜 표기법 (camelCase)
-//      변수, 함수
-        int myAge = 10;
-        
-//      3-2. 파스칼 표기법 (PascalCase)
-//      클래스
-        int MyAage = 10;
-        
-//      참고) 스네이크 표기법 (snake_case)
-//      사용 X
-        int my_age = 10;
+        int intNum2 = Integer.MAX_VALUE;
+        System.out.println("intNum2 = " + intNum2);
+        int intNUm3 = Integer.MIN_VALUE + 1;
+        System.out.println("intNUm3 = " + intNUm3);
+
+        long longNum = (long)Integer.MAX_VALUE + 1;
+        System.out.println("longNum = " + longNum);
+//      1-2. 실수
+        float floatNum = 1.23f;
+        double doubleNum = 1.23;
+        System.out.println(Float.MAX_VALUE);
+        System.out.println(Double.MAX_VALUE);
+
+//      1-3. 2진수 / 8진수 / 16진수
+        int numBase2 = 0b1101110;
+        System.out.println("numBase2 = " + numBase2);
+        int numBase8 = 015;
+        System.out.println("numBase8 = " + numBase8);
+        int numBase16 = 0xC;
+        System.out.println("numBase16 = " + numBase16);
+
+        System.out.println("0b" + Integer.toBinaryString(numBase2));
+        System.out.println("0" + Integer.toOctalString(numBase8));
+        System.out.println("0x" + Integer.toHexString(numBase16));
+
+//      2. 자료형 - 부울
+        System.out.println("== 부울 ==");
+
+        boolean isTrue = true;
+        boolean isFalse = false;
+
+        System.out.println(isTrue);
+        System.out.println(isFalse);
+
+//      3. 자료형 - 문자
+        System.out.println("== 문자 ==");
+
+        char keyFirst = 'a';
+        System.out.println("keyFirst = " + keyFirst);
+        char keyLast = 'z';
+        System.out.println("keyLast = " + keyLast);
+
+        System.out.println((int)keyFirst);
+        System.out.println((int)keyLast);
+
+;
 
     }
 }
-
