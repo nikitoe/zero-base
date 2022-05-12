@@ -1,86 +1,119 @@
-// Java 프로그래밍 - 변수와 자료형_3
+// Java 프로그래밍 - 변수와 자료형_4
 
 
-
-import java.util.Locale;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
 
-//      1. 자료형 - 문자열
-        System.out.println("== 문자열 ==");
-        String s1 = "Hello World";
-        System.out.println("s1 = " + s1);
-        String s2 = "12345";
-        System.out.println("s2 = " + s2);
+//      1. 자료형 - 리스트
+        System.out.println("== 리스트 ==");
+        ArrayList l1 = new ArrayList();
 
-//      1-1. equals
-        String s3 = "Hi";
-        String s4 = "Hi";
-        System.out.println(s3.equals(s4));
-        System.out.println(s3 == s4);
+//      1-1. add
+        l1.add(1);
+        l1.add("Hello");
+        l1.add(2);
+        l1.add(3);
+        l1.add(4);
+        l1.add("World!");
+        System.out.println("l1 = " + l1);
 
-        String s5 = new String("Hi");
-        System.out.println(s3.equals(s5));
-        System.out.println(s3 == s5);
+        l1.add(0,10);
+        System.out.println("l1 = " + l1);
 
-//      1-2. indexOf
-        String s6 = "Hello! World!";
-        System.out.println(s6.indexOf("!"));
-        System.out.println(s6.indexOf("!",s6.indexOf("!") + 1));
+//      1-2. get
+        System.out.println(l1.get(0));
+        System.out.println(l1.get(3));
 
+//      1-3. size
+        System.out.println(l1.size());
 
-//      1-3. replace
-        String s7 = s6.replace("Hello","Bye");
-        System.out.println("s7 = " + s7);
+//      1-4. remove
 
-
-//      1-4. substring
-        System.out.println(s7.substring(0, 3));
-        System.out.println(s7.substring(0, s7.indexOf("!") + 1));
-
-//      1-5. toUpperCase
-        System.out.println(s7.toUpperCase());
+        System.out.println(l1.remove(0));
+        System.out.println("l1 = " + l1);
+        System.out.println(l1.remove(Integer.valueOf(2)));
+        System.out.println("l1 = " + l1);
 
 
-//      2. 자료형 - StringBuffer
-        System.out.println("== StringBuffer ==");
-        StringBuffer sb1 = new StringBuffer();
-        sb1.append("01234");
-        System.out.println("sb1 = " + sb1);
-        sb1.append("5679");
-        System.out.println("sb1 = " + sb1);
 
-        String a = "01234";
-        String b = "56789";
-        String bak = a;
-        System.out.println(a == bak);
+//      1-5. clear
+        l1.clear();
+        System.out.println("l1 = " + l1);
 
-        a += b;
-        System.out.println(a);
-        System.out.println(a == bak);
+//      1-6. sort
+        ArrayList l2 = new ArrayList();
+        l2.add(5);
+        l2.add(6);
+        l2.add(7);
+        System.out.println("l2 = " + l2);
+        
+        l2.sort(Comparator.naturalOrder()); // 오름차순
+        System.out.println("l2 = " + l2);
+
+        l2.sort(Comparator.reverseOrder()); // 내림차순
+        System.out.println("l2 = " + l2);
 
 
-//      3. 자료형 - 배열
-        System.out.println("== 배열 ==");
-        int[] myArray = {1,2,3};
-        System.out.println(myArray[0]);
-        System.out.println(myArray[1]);
-        System.out.println(myArray[2]);
 
-        char[] myArray2 = {'a','b','c'};
-        System.out.println(myArray2[0]);
-        System.out.println(myArray2[1]);
-        System.out.println(myArray2[2]);
+//      1-7. contains
+        System.out.println(l2.contains(1));
+        System.out.println(l2.contains(5));
 
-        String[] myArray3 = new String[3];
-        myArray3[0] = "Hello";
-        myArray3[1] = " ";
-        myArray3[2] = "World";
-        System.out.println(myArray3[0]);
-        System.out.println(myArray3[1]);
-        System.out.println(myArray3[2]);
 
+//      2. Maps
+        System.out.println("== Maps ==");
+        HashMap map = new HashMap();
+
+//      2-1. put
+        map.put("Kiwi", 9000);
+        map.put("banana", 1000);
+        map.put("apple", 800);
+        System.out.println("map = " + map);
+
+//      2-2. get
+        System.out.println(map.get("mandarin"));
+        System.out.println(map.get("apple"));
+
+
+//      2-3. size
+        System.out.println(map.size());
+
+//      2-4. remove
+        System.out.println(map.remove("Kiwi"));
+        System.out.println(map.remove("Mandarin"));
+        System.out.println("map = " + map);
+
+//      2-5. containsKey
+        System.out.println(map.containsKey("apple"));
+        System.out.println(map.containsKey("Kiwi"));
+
+
+//      3. Generics
+        System.out.println("== Generics ==");
+        ArrayList l3 = new ArrayList();
+        l3.add(1);
+        l3.add("Hello");
+        System.out.println("l3 = " + l3);
+
+        ArrayList<String> l4 = new ArrayList<String>();
+       // l4.add(1);
+        l4.add("Hello");
+        System.out.println("l4 = " + l4);
+
+        HashMap map2 = new HashMap();
+        map2.put(123,"ID");
+        System.out.println("map2 = " + map2);
+
+        HashMap<String,Integer> map3 = new HashMap<String, Integer>();
+        //map3.put(123,123);
+        map3.put("ID",123);
+        System.out.println("map3 = " + map3);
 
     }
+
 }
