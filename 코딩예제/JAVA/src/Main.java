@@ -1,65 +1,100 @@
-// Java 프로그래밍 - 클래스와 객체_1
+// Java 프로그래밍 - 클래스와 객체_2
 
-// Car 클래스 - 객체변수, 메소드
-class Car{
+import car.Car2;
+
+class Car {
     String name;
     String type;
 
-    public void printCarInfo(){
-        System.out.println("== Car Info ==");
-        System.out.println("name = " + name);
-        System.out.println("type = " + type);
-    }
-
-    public void move() {
-        System.out.println("이동!");
-    }
-
-    public void brake() {
-        System.out.println("정지!");
-    }
-}
-
-// Car2 클래스 - 생성자, this
-class Car2 {
-    String name;
-    String type;
-
-    Car2(String name, String type){
+    Car(String name, String type) {
         this.name = name;
         this.type = type;
-        System.out.println("생성자 출력!");
-    }
-    public void printCarInfo(){
-        System.out.println("== Car Info ==");
-        System.out.println("name = " + name);
-        System.out.println("type = " + type);
     }
 
-    public void laod() {
-        System.out.println("짐을 주세요!");
+    public void printCarInfo() {
+        System.out.println("=== Car Info ===");
+        System.out.println("name: " + name);
+        System.out.println("type: " + type);
     }
 
-    public void horn() {
-        System.out.println("빵빵!");
+    // 오버로딩 구현
+
+    public void printCarInfo(String data){
+        this.printCarInfo();
+        System.out.println("data = " + data);
+    }
+
+    public void printCarInfo(int number){
+        this.printCarInfo();
+        System.out.println("number = " + number);
+    }
+
+    public void printCarInfo(String data, int number){
+        this.printCarInfo();
+        System.out.println("data = " + data);
+        System.out.println("number = " + number);
     }
 }
+
+
+class Car3 {
+    // 스태틱 변수
+    static String name = "none";
+    String type;
+
+    Car3(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public void printCarInfo() {
+        System.out.println("=== Car Info ===");
+        System.out.println("name: " + name);
+        System.out.println("type: " + type);
+    }
+
+    // 스태틱 메소드
+    public static void getName(){
+        System.out.println("Carname = " + name);
+    }
+}
+
 
 public class Main {
 
     public static void main(String[] args) {
-//      Car 클래스 사용
-        Car myCar1 = new Car();
-        myCar1.name = "a";
-        myCar1.type = "suv";
+        Car myCar1 = new Car("a", "sedan");
         myCar1.printCarInfo();
-        myCar1.move();
-        myCar1.brake();
-//      Car2 클래스 사용
-        Car2 myCar2 = new Car2("b","seden");
-        myCar2.printCarInfo();
-        myCar2.laod();
-        myCar2.horn();
+
+//      1. 오버로딩 사용
+        System.out.println("=== 오버로딩 사용 ===");
+        myCar1.printCarInfo();
+        myCar1.printCarInfo("2022");
+        myCar1.printCarInfo(1234);
+        myCar1.printCarInfo("2022", 1234);
+
+
+//      2. 접근 제어자
+        System.out.println("=== 접근 제어자 ===");
+        Car2 myCar2 = new Car2("a","b","c","d");
+        System.out.println(myCar2.name1);
+        //System.out.println(myCar2.name2);
+        //System.out.println(myCar2.name3);
+        //System.out.println(myCar2.name4);
+
+
+
+
+//      3. Static
+        System.out.println("=== Static ===");
+        Car3.getName();
+        Car3 myCar3_1 = new Car3("a", "sedan");
+        Car3 myCar3_2 = new Car3("b", "suv");
+        Car3 myCar3_3 = new Car3("c", "rv");
+        myCar3_1.printCarInfo();
+        myCar3_2.printCarInfo();
+        myCar3_3.printCarInfo();
 
     }
+
 }
