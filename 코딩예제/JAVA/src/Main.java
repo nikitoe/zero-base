@@ -1,84 +1,96 @@
-// Java 프로그래밍 - 여러가지 연산자_2
+// Java 프로그래밍 - 조건문
 
 public class Main {
     public static void main(String[] args) {
 
-//      1. 비트 논리 연산자
-        System.out.println("== 비트 논리 연산자 ==");
-//      1-1. AND 연산자 (&)
-        int num1 = 5;
-        int num2 = 3;
-        int result = 0;
+//      1. 조건문 - if
+        System.out.println("== if ==");
+        int waterTemperature = 100;
 
-        result = num1 & num2;
-        System.out.println("result = " + result);
-        System.out.println(Integer.toBinaryString(num1));
-        System.out.println(Integer.toBinaryString(num2));
+        if(waterTemperature >= 100) {
+            System.out.println("물이 끓습니다.");
+        } else {
+            System.out.println("물을 끓이는 중입니다.");
+        }
 
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(num1)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(num2)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(result)));
+        int score = 60;
+        char grade= 0;
 
-//      1-2. OR 연산자 (|)
-        System.out.println("== | ==");
+        if(score >= 90){
+            grade = 'A';
+        } else if(score >= 80){
+            grade = 'B';
+        } else if(score >= 70) {
+            grade = 'C';
+        } else {
+            grade = 'F';
+        }
+        System.out.println("grade = " + grade);
 
-        result = num1 | num2;
-        System.out.println("result = " + result);
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(num1)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(num2)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(result)));
+//      2. 조건문 - switch
+        System.out.println("== switch ==");
 
+        String fruit = "apple2";
 
+        switch(fruit) {
 
-//      1-3. XOR 연산자 (^)
-        System.out.println("== XOR ==");
-        result = num1 ^ num2;
-        System.out.println("result = " + result);
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(num1)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(num2)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(result)));
+            case "apple" :
+                System.out.println(fruit + "은 5000원 입니다.");
+                break;
 
-//      1-4. 반전 연산자 (~)
-        System.out.println("== ~ ==");
-        num1 =5;
+            case "blueberry" :
+                System.out.println(fruit + "은 10000원 입니다.");
+                break;
 
-        result = ~num1;
-        System.out.println("result = " + result);
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(num1)));
-        System.out.printf("%s\n", Integer.toBinaryString(result));
-
-
-
-//      2. 비트 이동 연산자
-        System.out.println("== 비트 이동 연산자 ==");
-//      2-1. << 연산자
-        int numA = 3;
-        result = numA << 1;
-
-        System.out.println("numA = " + numA);
-        System.out.println("result = " + result);
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(numA)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(result )));
-
-//      2-2. >> 연산자
-
-        result = numA >> 1;
-        System.out.println("numA = " + numA);
-        System.out.println("result = " + result);
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(numA)));
-        System.out.printf("%04d\n", Integer.parseInt(Integer.toBinaryString(result )));
-//      2-3. >>> 연산자
-
-        numA = -5;
-        result = numA >>1;
-        System.out.printf("%s\n", Integer.toBinaryString(numA));
-        System.out.printf("%s\n", Integer.toBinaryString(result));
-
-        result = numA >>> 1;
-        System.out.printf("%s\n", Integer.toBinaryString(numA));
-        System.out.printf("%s\n", Integer.toBinaryString(result));
+            default:
+                System.out.println("해당 과일이 업습니다");
+                break;
+        }
 
 
+//      Q1. number의 값이 홀수인지 짝수인지 판단하는 코드를 작성하세요.
+        int number = 5;
+        if(number % 2 == 0){
+            System.out.println("짝수 입니다.");
+        }else {
+            System.out.println("홀수 입니다.");
+        }
+
+
+//      Q2. 아래 주석은 위의 실습에서 진행한 score에 따라 grade를 출력하는 코드이다.
+//        이를 switch 조건문 기반으로 바꿔보세요.
+//        int score = 90;
+//        char grade = 0;
+//        if (score >= 90) {
+//            grade = 'A';
+//        } else if (score >= 80) {
+//            grade = 'B';
+//        } else if (score >= 70) {
+//            grade = 'C';
+//        } else {
+//            grade = 'F';
+//        }
+//        System.out.println("grade = " + grade);
+
+        score = 99;
+        grade = 0;
+
+        switch(score / 10) {
+            case 10:
+            case 9:
+                grade = 'A';
+                break;
+            case 8:
+                grade = 'B';
+                break;
+            case 7:
+                grade = 'C';
+                break;
+            default :
+                grade = 'F';
+                break;
+        }
+
+        System.out.println(grade);
     }
-
 }
