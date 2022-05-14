@@ -1,96 +1,123 @@
-// Java 프로그래밍 - 조건문
+// Java 프로그래밍 - 반복문
 
 public class Main {
     public static void main(String[] args) {
 
-//      1. 조건문 - if
-        System.out.println("== if ==");
-        int waterTemperature = 100;
-
-        if(waterTemperature >= 100) {
-            System.out.println("물이 끓습니다.");
-        } else {
-            System.out.println("물을 끓이는 중입니다.");
+//      1. 반복문 - for
+        System.out.println("== for ==");
+//      1-1. 기본 사용 방법
+        for (int i = 0 ; i < 5; i++) {
+            System.out.println(i);
         }
 
-        int score = 60;
-        char grade= 0;
-
-        if(score >= 90){
-            grade = 'A';
-        } else if(score >= 80){
-            grade = 'B';
-        } else if(score >= 70) {
-            grade = 'C';
-        } else {
-            grade = 'F';
+        for (int i = 0;i < 5;i++){
+            for(int j = 0; j < i + 1;j++){
+                System.out.print("*");
+            }
+            System.out.println();
         }
-        System.out.println("grade = " + grade);
 
-//      2. 조건문 - switch
-        System.out.println("== switch ==");
+        System.out.println();
+        for (int i = 0;i < 5;i++){
+            if(i == 2){
+                continue;
+            }
 
-        String fruit = "apple2";
+            for(int j = 0; j < i + 1;j++){
+                System.out.print("*");
+            }
+            System.out.println();
+        }
 
-        switch(fruit) {
-
-            case "apple" :
-                System.out.println(fruit + "은 5000원 입니다.");
+        System.out.println();
+        for (int i = 0;i < 5;i++){
+            if(i == 2){
                 break;
+            }
 
-            case "blueberry" :
-                System.out.println(fruit + "은 10000원 입니다.");
-                break;
-
-            default:
-                System.out.println("해당 과일이 업습니다");
-                break;
+            for(int j = 0; j < i + 1;j++){
+                System.out.print("*");
+            }
+            System.out.println();
         }
 
 
-//      Q1. number의 값이 홀수인지 짝수인지 판단하는 코드를 작성하세요.
-        int number = 5;
-        if(number % 2 == 0){
-            System.out.println("짝수 입니다.");
-        }else {
-            System.out.println("홀수 입니다.");
+//      1-2. for each
+        int[] nums = {1,2,3,4,5};
+
+        for (int i = 0; i < nums.length; i++) {
+            System.out.println(nums[i]);
+        }
+
+        for (int num : nums){
+            System.out.println(num);
+        }
+
+//      2. 반복문 - while
+        System.out.println("== while ==");
+        int i = 0;
+        while (i < 5) {
+            System.out.println(i++);
+        }
+
+        i = 0;
+        while (i < 5) {
+            if(i ==2){
+                i++;
+                continue;
+            }
+
+            System.out.println(i++);
+        }
+
+        i = 0;
+        while (i < 5) {
+            if(i ==2){
+                i++;
+                break;
+            }
+
+            System.out.println(i++);
+        }
+//      2-1. while
+
+
+//      2-2. do-while
+        boolean knock = false;
+        do {
+            System.out.println("knock");
+        }while (knock);
+
+
+//      Q1. 아래와 같은 출력 결과를 반복문과 조건문을 이용하여 출력해보세요.
+//      *
+//      ***
+//      *****
+//      *******
+
+        for (int j = 0; j < 8; j++) {
+            if(j % 2 == 0){
+                continue;
+            }
+            for (int k = 0; k <j; k++) {
+                System.out.print("*");
+            }
+            System.out.println();
         }
 
 
-//      Q2. 아래 주석은 위의 실습에서 진행한 score에 따라 grade를 출력하는 코드이다.
-//        이를 switch 조건문 기반으로 바꿔보세요.
-//        int score = 90;
-//        char grade = 0;
-//        if (score >= 90) {
-//            grade = 'A';
-//        } else if (score >= 80) {
-//            grade = 'B';
-//        } else if (score >= 70) {
-//            grade = 'C';
-//        } else {
-//            grade = 'F';
-//        }
-//        System.out.println("grade = " + grade);
 
-        score = 99;
-        grade = 0;
+//      Q2. 반복문을 실행할 때마다 물 온도를 1도씩 올리고 100도가 되면 종료한다.
+//          추가로, 10도, 20도, ... 10도 간격으로 물 온도를 출력하시오.
+        int waterTemperature = 0;
 
-        switch(score / 10) {
-            case 10:
-            case 9:
-                grade = 'A';
-                break;
-            case 8:
-                grade = 'B';
-                break;
-            case 7:
-                grade = 'C';
-                break;
-            default :
-                grade = 'F';
-                break;
+        while(waterTemperature<100){
+            waterTemperature++;
+            if(waterTemperature % 10 == 0){
+                System.out.println(waterTemperature);
+            }
+
         }
 
-        System.out.println(grade);
     }
 }
