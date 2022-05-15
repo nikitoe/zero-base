@@ -1,50 +1,24 @@
-// Java 프로그래밍 - 상속
+// Java 프로그래밍 - 다형성
 
 class Person {
-    String name;
-    int age;
-    public int a1;
-    private int a2;
-
-    Person() {}
-    Person(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public void printInfo() {
-        System.out.println("Person.printInfo");
-        System.out.println("name: " + name);
-        System.out.println("age: " + age);
+    public void print() {
+        System.out.println("Person.print");
     }
 }
 
-// Student 클래스 - Person 상속, 접근제어자 확인
-class Student extends  Person{
-    Student(){
-        a1 = 1;
-//        a2 = 1;
+class Student extends Person {
+    public void print() {
+        System.out.println("Student.print");
+    }
+
+    public void print2() {
+        System.out.println("Student.print2");
     }
 }
 
-// Student 클래스 - Person 상속, super 사용, 오버라이딩
-class Student2 extends  Person{
-    String name;
-    int stdId;
-
-    Student2(String name, int age, int stdId){
-        this.name = name;
-        super.name = name;
-//        super(name, age);
-        this.age = age;
-        this.stdId = stdId;
-    }
-
-    public void printInfo() {
-        System.out.println("Students2.printInfo");
-        System.out.println("name: " + name);
-        System.out.println("age: " + age);
-        System.out.println("stdId: " + stdId);
+class CollegeStudent extends Person {
+    public void print() {
+        System.out.println("CollegeStudent.print");
     }
 }
 
@@ -53,19 +27,74 @@ public class Main {
 
     public static void main(String[] args) {
 
-//      Test code
-//      1. 상속
-        System.out.println("=============");
+//      1. 다형성
+        System.out.println("== 다형성 ==");
+        Person p1 = new Person();
         Student s1 = new Student();
-        s1.name = "a";
-        s1.age = 25;
-        s1.printInfo();
+
+        Person p2 = new Student();
+
+        p1.print();
+        s1.print();
+        s1.print2();
+        p2.print();
+//        p2.print2();
 
 
-//      2. super, super(), 오버라이딩
-        System.out.println("=============");
-        Student2 s2 = new Student2("b",32, 1);
-        s2.printInfo();
+        Person p3 = new CollegeStudent();
+        p3.print();
+
+
+
+//      2. 타입 변환
+        System.out.println("== 타입 변환 ==");
+        Person pp1 = null;
+        Student ss1 = null;
+
+        Person pp2 = new Person();
+        Student ss2 = new Student();
+        Person pp3 = new Student(); //  업태스팅
+
+        pp1 = pp2;
+        pp1 = ss2;
+        
+        ss1 = ss2;
+//        ss1 = pp2;
+        ss1 = (Student) pp3;    // 다운 캐스팅
+
+        CollegeStudent cc1;
+        CollegeStudent cc2 = new CollegeStudent();
+//        ss1 = (Stduent)cc2;
+
+
+//      3. instanceof
+        System.out.println("== instanceof ==");
+        Person pe1 = new Person();
+        Student st1 = new Student();
+        Person pe2 = new Student();
+        Person pe3 = new CollegeStudent();
+
+        System.out.println(pe1 instanceof  Person);
+        System.out.println(pe1 instanceof  Student);
+
+        System.out.println(st1 instanceof  Person);
+        System.out.println(st1 instanceof  Student);
+
+        System.out.println(pe2 instanceof  Person);
+        System.out.println(pe2 instanceof  Student);
+
+        System.out.println(pe3 instanceof  Person);
+        System.out.println(pe3 instanceof  CollegeStudent);
+
+        if(pe1 instanceof  Student){
+            Student stu1 = (Student) pe1;
+        }
+
+        if(st1 instanceof  Person){
+            Person per1 = (Person) st1;
+        }
+
+
 
     }
 }
