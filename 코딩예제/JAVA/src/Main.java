@@ -1,59 +1,54 @@
-// Java 프로그래밍 - 인터페이스
+// Java 프로그래밍 - 내부 클래스
 
-// School 인터페이스
-interface School {
-    public static final int MAX_CLASS = 20;
-    public static final int MAX_PERSON_PER_CLASS = 40;
-    public abstract void printSchool();
-}
+// 내부 클래스 구조
+class Outer{
+    public void print(){
+        System.out.println("Outer.print");
+    }
 
-// Student 클래스 - School 인터페이스 이용
-class Student implements  School{
 
-    public void printSchool() {
-        System.out.println("00 university");
+    class Inner{
+        public void innerPrint(){
+            Outer.this.print();
+        }
+    }
+
+    static class InnerStaticClass{
+        void innerPrint(){
+//            Outer.this.print();
+        }
     }
 }
-
-// Person 클래스
-class Person {
-    public String name;
-
-    public void printName() {
-        System.out.println("Name: " + name);
-    }
+abstract class Person{
+    public abstract void printInfo();
 }
 
+class Student extends Person{
 
-// Student2 클래스 - Person 상속, School 인터페이스 이용
-class Student2 extends Person implements School {
-    Student2(String name){
-        super.name = name;
-    }
-    public void printSchool() {
-        System.out.println("11 university");
+    @Override
+    public void printInfo() {
+        System.out.println("Student.printInfo");
     }
 }
-
-
 public class Main {
 
     public static void main(String[] args) {
 
-//      1. 인터페이스 기본 사용
-        System.out.println("== 기본 인터페이스 ==");
-        Student s1 = new Student();
-        s1.printSchool();
-        System.out.println(s1.MAX_CLASS);
-        System.out.println(s1.MAX_PERSON_PER_CLASS);
+//      외부 클래스
+        Outer o1 = new Outer();
 
+//      내부 클래스 - 인스턴스
+        Outer.Inner i1 = new Outer().new Inner();
+//      내부 클래스 - 정적
+        Outer.InnerStaticClass is1 = new Outer.InnerStaticClass();
+//      익명 클래스
+        Person p1 = new Person(){
 
-//      2. 다중 상속처럼 사용하기
-        System.out.println("== Like 다중 상속 ==");
-        Student2 s2 = new Student2("A");
-        s2.printSchool();
-        s2.printName();
-
+            @Override
+            public void printInfo() {
+                System.out.println("Main.printInfo");
+            }
+        };
     }
 
 }
