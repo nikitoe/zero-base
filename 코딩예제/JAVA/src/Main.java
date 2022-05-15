@@ -1,61 +1,50 @@
-// Java 프로그래밍 - 클래스와 객체_2
+// Java 프로그래밍 - 상속
 
-import car.Car2;
-
-class Car {
+class Person {
     String name;
-    String type;
+    int age;
+    public int a1;
+    private int a2;
 
-    Car(String name, String type) {
+    Person() {}
+    Person(String name, int age) {
         this.name = name;
-        this.type = type;
+        this.age = age;
     }
 
-    public void printCarInfo() {
-        System.out.println("=== Car Info ===");
+    public void printInfo() {
+        System.out.println("Person.printInfo");
         System.out.println("name: " + name);
-        System.out.println("type: " + type);
-    }
-
-    // 오버로딩 구현
-
-    public void printCarInfo(String data){
-        this.printCarInfo();
-        System.out.println("data = " + data);
-    }
-
-    public void printCarInfo(int number){
-        this.printCarInfo();
-        System.out.println("number = " + number);
-    }
-
-    public void printCarInfo(String data, int number){
-        this.printCarInfo();
-        System.out.println("data = " + data);
-        System.out.println("number = " + number);
+        System.out.println("age: " + age);
     }
 }
 
+// Student 클래스 - Person 상속, 접근제어자 확인
+class Student extends  Person{
+    Student(){
+        a1 = 1;
+//        a2 = 1;
+    }
+}
 
-class Car3 {
-    // 스태틱 변수
-    static String name = "none";
-    String type;
+// Student 클래스 - Person 상속, super 사용, 오버라이딩
+class Student2 extends  Person{
+    String name;
+    int stdId;
 
-    Car3(String name, String type) {
+    Student2(String name, int age, int stdId){
         this.name = name;
-        this.type = type;
+        super.name = name;
+//        super(name, age);
+        this.age = age;
+        this.stdId = stdId;
     }
 
-    public void printCarInfo() {
-        System.out.println("=== Car Info ===");
+    public void printInfo() {
+        System.out.println("Students2.printInfo");
         System.out.println("name: " + name);
-        System.out.println("type: " + type);
-    }
-
-    // 스태틱 메소드
-    public static void getName(){
-        System.out.println("Carname = " + name);
+        System.out.println("age: " + age);
+        System.out.println("stdId: " + stdId);
     }
 }
 
@@ -63,38 +52,20 @@ class Car3 {
 public class Main {
 
     public static void main(String[] args) {
-        Car myCar1 = new Car("a", "sedan");
-        myCar1.printCarInfo();
 
-//      1. 오버로딩 사용
-        System.out.println("=== 오버로딩 사용 ===");
-        myCar1.printCarInfo();
-        myCar1.printCarInfo("2022");
-        myCar1.printCarInfo(1234);
-        myCar1.printCarInfo("2022", 1234);
-
-
-//      2. 접근 제어자
-        System.out.println("=== 접근 제어자 ===");
-        Car2 myCar2 = new Car2("a","b","c","d");
-        System.out.println(myCar2.name1);
-        //System.out.println(myCar2.name2);
-        //System.out.println(myCar2.name3);
-        //System.out.println(myCar2.name4);
+//      Test code
+//      1. 상속
+        System.out.println("=============");
+        Student s1 = new Student();
+        s1.name = "a";
+        s1.age = 25;
+        s1.printInfo();
 
 
-
-
-//      3. Static
-        System.out.println("=== Static ===");
-        Car3.getName();
-        Car3 myCar3_1 = new Car3("a", "sedan");
-        Car3 myCar3_2 = new Car3("b", "suv");
-        Car3 myCar3_3 = new Car3("c", "rv");
-        myCar3_1.printCarInfo();
-        myCar3_2.printCarInfo();
-        myCar3_3.printCarInfo();
+//      2. super, super(), 오버라이딩
+        System.out.println("=============");
+        Student2 s2 = new Student2("b",32, 1);
+        s2.printInfo();
 
     }
-
 }
