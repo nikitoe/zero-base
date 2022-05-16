@@ -1,24 +1,25 @@
 // Practice
-// 로또 번호 만들기
+// 아래 인터페이스를 이용하여 익명클래스로 구현한 내용을 람다식으로 구현해보세요.
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
+interface CompareTool {
+    public abstract int getMaxNum(int num1, int num2);
+}
 
 public class Practice {
     public static void main(String[] args) {
-
-        HashSet set = new HashSet();
-
-        for (int i = 0; set.size() < 6; i++) {
-            int num = (int)(Math.random() * 45) +1;
-            set.add(num);
-        }
-
-        LinkedList list = new LinkedList(set);
-        Collections.sort(list);
-        System.out.println("로또 번호: " + list);
+        // Test code
+        CompareTool cTool = new CompareTool() {
+            @Override
+            public int getMaxNum(int num1, int num2) {
+                return num1 > num2? num1 : num2;
+            }
+        };
+        System.out.println(cTool.getMaxNum(10, 11));
 
 
+        // 람다식으로 작성
+
+        CompareTool cTool2 = (x, y) -> {return x > y ? x : y;};
+        System.out.println(cTool2.getMaxNum(10,11));
     }
 }
