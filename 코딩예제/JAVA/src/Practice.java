@@ -1,25 +1,26 @@
 // Practice
-// 아래 인터페이스를 이용하여 익명클래스로 구현한 내용을 람다식으로 구현해보세요.
+// 하기 예제를 스트림으로 구현해보세요.
 
-interface CompareTool {
-    public abstract int getMaxNum(int num1, int num2);
-}
+import java.util.stream.IntStream;
 
 public class Practice {
     public static void main(String[] args) {
-        // Test code
-        CompareTool cTool = new CompareTool() {
-            @Override
-            public int getMaxNum(int num1, int num2) {
-                return num1 > num2? num1 : num2;
+
+        // 예제: 1~10 숫자 중 짝수 들의 합
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int sum = 0;
+
+        for (int num: arr) {
+            if (num % 2 == 0) {
+                sum += num;
             }
-        };
-        System.out.println(cTool.getMaxNum(10, 11));
+        }
+        System.out.println("sum = " + sum);
 
 
-        // 람다식으로 작성
+        // 스트림으로 구현
+        int sum2 = IntStream.range(1,11).filter(n -> n % 2 ==0).sum();
+        System.out.println("sum2 = " + sum2);
 
-        CompareTool cTool2 = (x, y) -> {return x > y ? x : y;};
-        System.out.println(cTool2.getMaxNum(10,11));
     }
 }
