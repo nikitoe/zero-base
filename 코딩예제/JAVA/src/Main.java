@@ -1,55 +1,97 @@
-// Java 프로그래밍 - 입출력_2
+// Java 프로그래밍 - 예외 처리
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+
+class NotTenException extends RuntimeException{
+
+}
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-//      1. 파일 쓰기
-//      FileWriter
-
-//        FileWriter fw = new FileWriter("./memo.txt");
-//        String memo = "헤드 라인\n";
-//        fw.write(memo);
-//        memo = "1월 1일 날시 말음\n";
-//        fw.write(memo);
-//
-//        fw.close();
-        
-
-//      PrintWriter
-        PrintWriter pw = new PrintWriter("./memo.txt");
-        String memo = "헤드 라인";
-        pw.println(memo);
-
-        memo = "1월 1일 날씨 말음";
-        pw.println(memo);
-
-        pw.close();
-
-
-//      파일 이어 쓰기
-        FileWriter fw2 = new FileWriter("./memo.txt",true);
-
-        memo = "1월 2일 날씨 완전 맑음\n";
-        fw2.write(memo);
-        fw2.close();
-
-        PrintWriter pw2 = new PrintWriter(new FileWriter("./memo.txt",true));
-        memo = "1월 3일 날씨 완전 맑음!";
-        pw2.println(memo);
-        pw2.close();
-
-//      2. 파일 입력
-        BufferedReader br = new BufferedReader(new FileReader("./memo.txt"));
-        while(true){
-            String line = br.readLine();
-
-            if(line == null){
-                break;
-            }
-            System.out.println(line);
+    public static boolean checkTen(int ten) {
+        if (ten != 10) {
+            return false;
         }
-        br.close();
+
+        return true;
     }
+
+    public static boolean checkTenWithException(int ten) {
+        try{
+
+            if(ten != 10){
+                throw new NotTenException();
+            }
+
+        } catch (NotTenException e) {
+            System.out.println("e = " + e);
+            return  false;
+        }
+        return true;
+    }
+
+    public static boolean checkTenWithThrows(int ten) throws  NotTenException{
+        if(ten != 10){
+            throw  new NotTenException();
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) throws IOException {
+
+//      1. 예외
+//      1-1. 0으로 나누기
+        System.out.println("== 0으로 나누기 ==");
+//        int a = 5 / 0;
+
+        try{
+            int a = 5 / 0;
+        }catch(ArithmeticException e) {
+            System.out.println("0으로 나누기 예외 발생");
+            System.out.println("e = " + e);
+        }finally {
+            System.out.println("1-1연습 종료");
+        }
+
+//      1-2. 배열 인덱스 초과
+        System.out.println("== 배열 인덱스 초과 ==");
+        int[] b = new int[4];
+//        b[4] = 1;
+        try{
+            b[4] = 1;
+        }catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("e = " + e);
+        }
+        
+//      1-3. 없는 파일 열기
+        System.out.println("== 없는 파일 열기 ==");
+//        BufferedReader br = new BufferedReader(new FileReader("abc.txt"));
+
+//      2. throw, throws
+        System.out.println("== checkTen ==");
+        boolean checkResult = Main.checkTen(10);
+        System.out.println("checkResult = " + checkResult);
+
+
+        System.out.println("== checkTenWithException ==");
+        checkResult = checkResult = Main.checkTenWithException(11);
+        System.out.println("checkResult = " + checkResult);
+        
+        
+        System.out.println("== checkTenWithThrows ==");
+        try {
+
+            checkResult = checkTenWithException(5);
+
+        }catch(NotTenException e) {
+            System.out.println("e = " + e);
+        }
+        System.out.println("checkResult = " + checkResult);
+
+    }
+
 }
