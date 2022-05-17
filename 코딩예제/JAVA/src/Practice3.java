@@ -1,78 +1,46 @@
+import java.util.ArrayList;
 
-public class Practice3 {
-    public static String solution(char[] str, char[] find, char[] to) {
-        int idx = 0;
-        String replaceStr = "";
-        char[] replaceBucket = str.clone();
+public class    Practice3 {
+    public static String solution(String input, String cmd) {
+        StringBuffer sb = new StringBuffer(input);
+        ArrayList<String> cmdArr = new ArrayList<>();
 
-
-        do{
-            idx = findIndex(replaceBucket,find);
-
-            if (idx != -1) {
-                for (int i = 0; i < idx; i++) {
-                    replaceStr += replaceBucket[i];
-                }
-                for (int i = 0; i < to.length; i++) {
-                    replaceStr += to[i];
-                }
-
-                for (int i = idx + find.length; i < replaceBucket.length; i++) {
-                    replaceStr += replaceBucket[i];
-                }
-
-                replaceBucket = replaceStr.toCharArray();
-                replaceStr = "";
-                
-            }
-        }while(idx != -1);
-
-        replaceStr = new String(replaceBucket);
-        return replaceStr;
-
-    }
-
-    public static int findIndex(char[] str, char[] find){
-        int idx = -1;
-        boolean isMatch = false;
-        for (int i = 0; i < str.length; i++) {
-            if(str[i] == find[0] && str.length -i >= find.length){
-                isMatch = true;
-                for (int j = 1; j < find.length; j++) {
-                    if(str[i + j] != find[j]){
-                        isMatch =false;
-                        break;
-                    }
-                }
-            }
-            if (isMatch) {
-                idx = i;
-                break;
-            }
-
+        for(String s:cmd.split(" ")){
+            cmdArr.add(s);
         }
-        return idx;
-    }
 
+        int curSor = sb.length();
+        int cmdIdx = 0;
+        while(cmdIdx != cmdArr.size()){
+            String cur = cmdArr.get(cmdIdx);
+
+            if(cur.equals("L")){
+                curSor = Math.max(0, curSor - 1);
+            }else if(cur.equals("D")) {
+                curSor = Math.min(sb.length(), curSor + 1);
+            }else if(cur.equals("B")) {
+                if(curSor ==0) {
+                    cmdIdx++;
+                    continue;
+                }
+                sb.delete(curSor - 1, curSor);
+                curSor = Math.max(0, curSor -1);
+            }else if(cur.equals("P")) {
+                String s =cmdArr.get(++cmdIdx);
+                sb.insert(curSor, s);
+                curSor += 1;
+            }
+
+            cmdIdx++;
+        }
+        return sb.toString();
+    }
 
     public static void main(String[] args) {
-        // Test code
-        String str = "Hello Java, Nice to meet you! Java is fun!";
-        String find = "Java";
-        String to = "자바";
-
-        // 기존 String replace
-        System.out.println(str.replace(find, to));
-
-        // 자체 구현 replace
-        char[] strExArr = str.toCharArray();
-        char[] findArr = find.toCharArray();
-        char[] toArr = to.toCharArray();
-        System.out.println(solution(strExArr, findArr, toArr));
-
-        strExArr = "POP".toCharArray();
-        findArr = "P".toCharArray();
-        toArr = "W".toCharArray();
-        System.out.println(solution(strExArr, findArr, toArr));
+        // test code
+        System.out.println(solution("aba", "L B"));
+        System.out.println(solution("abcd", "P x L P y"));
+        System.out.println(solution("abc", "L L L P x L B P y"));
+        System.out.println(solution("a", "B B L L D D P a P b P c"));
     }
 }

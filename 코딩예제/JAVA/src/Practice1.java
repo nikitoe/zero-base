@@ -1,28 +1,36 @@
+import java.util.HashMap;
 
 public class Practice1 {
-    public static void solution(int num) {
-        int numReverse = 0;
-        boolean isMinus = false;
+    public static void solution(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put('I',1);
+        map.put('V',5);
+        map.put('X',10);
+        map.put('L',50);
+        map.put('C',100);
+        map.put('D',500);
+        map.put('M',1000);
 
-        if(num < 0){
-            isMinus =true;
-            num *= -1;
+        int sum = 0;
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < arr.length - 1; i++) {
+            if(map.get(arr[i]) < map.get(arr[i+1])) {
+                sum -= map.get(arr[i]);
+            } else {
+                sum += map.get(arr[i]);
+            }
         }
-
-        while(num>0){
-            int r = num % 10;
-            num /=10;
-            numReverse = numReverse * 10 +r;
-        }
-
-        System.out.println(isMinus ? numReverse * -1 : numReverse);
+        sum += map.get(arr[arr.length - 1]);
+        System.out.println(sum);
     }
 
     public static void main(String[] args) {
         // Test code
-        solution(12345);
-        solution(-12345);
-        solution(100);
-        solution(0);
+        solution("III");
+        solution("IV");
+        solution("VI");
+        solution("XIII");
+        solution("XXVI");
+        solution("MCMXCIV");
     }
 }
