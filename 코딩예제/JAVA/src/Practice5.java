@@ -1,53 +1,44 @@
 
 public class Practice5 {
-    public static int solution(int[] ratings) {
-        if(ratings == null || ratings.length == 0){
+    public static int solution(int[] height) {
+        if (height == null || height.length == 0) {
             return 0;
         }
-        int result = 1;
-        int upCnt = 1;
-        int peak = 0;
-        int downCnt = 0;
 
-        for (int i = 1; i < ratings.length; i++) {
-             if(ratings[i] > ratings[i - 1]){
-                 upCnt++;
-                 peak = upCnt;
-                 downCnt = 0;
-                 result += upCnt;
-             } else if(ratings[i] == ratings[i -1]){
-                 upCnt = 1;
-                 downCnt = 0;
-                 peak = 0;
-                 result += 1;
-             } else {
-                 downCnt++;
-                 upCnt = 1;
-                 result += downCnt;
+        int left = 0;
+        int right = height.length - 1;
+        int leftMax = 0;
+        int rightMax = 0;
+        int result = 0;
 
-                 if(peak <= downCnt){
-                    result += 1;
-                 }
-             }
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if(height[left] >= leftMax){
+                    leftMax = height[left];
+                }else {
+                    result += leftMax - height[left];
+                }
+                left++;
+            }else {
+                if (height[right] >= rightMax) {
+                    rightMax = height[right];
+                }else{
+                    result += rightMax - height[right];
+                }
+                right--;
+            }
+
         }
+
         return result;
     }
 
     public static void main(String[] args) {
         // Test code
-        int[] ratings = {1, 2, 3};
-        System.out.println(solution(ratings));
+        int[] height = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+        System.out.println(solution(height));
 
-        ratings = new int[]{3, 2, 1};
-        System.out.println(solution(ratings));
-
-        ratings = new int[]{1, 0, 2};
-        System.out.println(solution(ratings));
-
-        ratings = new int[]{1, 2, 2};
-        System.out.println(solution(ratings));
-
-        ratings = new int[]{1, 3, 5, 3, 1, 3, 5, 7, 5, 3, 1, 0};
-        System.out.println(solution(ratings));
+        height = new int[]{4, 2, 0, 3, 2, 5};
+        System.out.println(solution(height));
     }
 }

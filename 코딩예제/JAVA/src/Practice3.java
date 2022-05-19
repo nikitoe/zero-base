@@ -1,46 +1,67 @@
-import java.util.ArrayList;
+import java.util.*;
 
-public class    Practice3 {
-    public static String solution(String input, String cmd) {
-        StringBuffer sb = new StringBuffer(input);
-        ArrayList<String> cmdArr = new ArrayList<>();
+public class Practice3 {
+    public static void solution(int[] arr, int k, int x) {
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
 
-        for(String s:cmd.split(" ")){
-            cmdArr.add(s);
-        }
+        for (int i = 0; i < arr.length ; i++) {
+            int diff = Math.abs(x - arr[i]);
 
-        int curSor = sb.length();
-        int cmdIdx = 0;
-        while(cmdIdx != cmdArr.size()){
-            String cur = cmdArr.get(cmdIdx);
+            ArrayList<Integer> cur = map.get(diff);
+            if (cur == null) {
+                map.put(diff, new ArrayList<>(Arrays.asList(arr[i])));
 
-            if(cur.equals("L")){
-                curSor = Math.max(0, curSor - 1);
-            }else if(cur.equals("D")) {
-                curSor = Math.min(sb.length(), curSor + 1);
-            }else if(cur.equals("B")) {
-                if(curSor ==0) {
-                    cmdIdx++;
-                    continue;
+            }else{
+                int idx = cur.size();
+                for (int j = 0; j < cur.size(); j++) {
+                    if (cur.get(j) > arr[i]) {
+                        idx = j;
+                        break;
+                    }
                 }
-                sb.delete(curSor - 1, curSor);
-                curSor = Math.max(0, curSor -1);
-            }else if(cur.equals("P")) {
-                String s =cmdArr.get(++cmdIdx);
-                sb.insert(curSor, s);
-                curSor += 1;
+                cur.add(idx, arr[i]);
             }
-
-            cmdIdx++;
         }
-        return sb.toString();
+
+        ArrayList<Integer> result = new ArrayList<>();
+        int cnt = 0;
+        while(map.size() > 0){
+            int minDiff = map.keySet().stream().min((a, b) -> a -b).get();
+            ArrayList<Integer> cur = map.get(minDiff);
+            map.remove(minDiff);
+
+            while(cur.size() > 0){
+                result.add(cur.get(0));
+                cur.remove(0);
+                cnt++;
+
+                if(cnt == k){
+                    break;
+                }
+            }
+            if(cnt == k){
+                break;
+            }
+        }
+
+        Collections.sort(result);
+        System.out.println(result);
+
+
     }
 
     public static void main(String[] args) {
-        // test code
-        System.out.println(solution("aba", "L B"));
-        System.out.println(solution("abcd", "P x L P y"));
-        System.out.println(solution("abc", "L L L P x L B P y"));
-        System.out.println(solution("a", "B B L L D D P a P b P c"));
+        // Test code
+        int[] arr = {1, 2, 3, 4, 5};
+        solution(arr, 4, 3);
+
+        arr = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        solution(arr, 5, 5);
+
+        arr = new int[]{2, 4};
+        solution(arr, 1, 3);
+
+        arr = new int[]{2, 4};
+        solution(arr, 3, 3);
     }
 }
