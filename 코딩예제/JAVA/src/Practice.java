@@ -1,26 +1,114 @@
 // Practice
-// 하기 예제를 스트림으로 구현해보세요.
+// ArrayList를 사용한 집합 구현 실습 (집합 관련 연산 사용 X)
 
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+
+class MySet {
+// ArrayList
+    ArrayList<Integer> list;
+
+// 생성자1
+    MySet() {
+        this.list = new ArrayList<Integer>();
+    }
+
+// 생성자 2
+
+    MySet(int[] arr){
+        this.list = new ArrayList<Integer>();
+
+        for(int item:arr){
+            this.list.add(item);
+        }
+    }
+
+// 원소 추가 (중복 X)
+    public void add(int x){
+        for(int item: this.list){
+            if(item == x){
+                return;
+            }
+        }
+        this.list.add(x);
+    }
+
+// 교집합
+    public MySet retainAll(MySet b){
+        MySet result = new MySet();
+
+        for(int itemA: this.list){
+            for(int itemB: b.list){
+                if(itemA == itemB){
+                    result.add(itemA);
+                }
+            }
+        }
+        return result;
+    }
+
+// 합집합
+
+    public MySet addAll(MySet b){
+        MySet result = new MySet();
+
+        for(int itemA : this.list){
+            result.add(itemA);
+        }
+        for(int itemB : b.list){
+            result.add(itemB);
+        }
+        return result;
+
+    }
+
+// 차집합
+    public MySet removeAll(MySet b){
+        MySet result = new MySet();
+
+        for(int itemA:this.list){
+            boolean containFlag = false;
+
+            for(int itemB: b.list){
+                if(itemA == itemB){
+                    containFlag = true;
+                    break;
+                }
+            }
+            if(!containFlag){
+                result.add(itemA);
+            }
+        }
+        return result;
+    }
+
+}
 
 public class Practice {
     public static void main(String[] args) {
 
-        // 예제: 1~10 숫자 중 짝수 들의 합
-        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        int sum = 0;
+//      Test code
+        MySet a = new MySet();
 
-        for (int num: arr) {
-            if (num % 2 == 0) {
-                sum += num;
-            }
-        }
-        System.out.println("sum = " + sum);
+        a.add(1);
+        a.add(1);
+        a.add(1);
+        System.out.println(a.list);
+        a.add(2);
+        a.add(3);
+        System.out.println(a.list);
 
+        a = new MySet(new int[]{1, 2, 3, 4, 5});
+        MySet b = new MySet(new int[]{2, 4, 6, 8, 10});
+        System.out.println("a: " + a.list);
+        System.out.println("b: " + b.list);
 
-        // 스트림으로 구현
-        int sum2 = IntStream.range(1,11).filter(n -> n % 2 ==0).sum();
-        System.out.println("sum2 = " + sum2);
+        MySet result = a.retainAll(b);
+        System.out.println("교집합: " + result.list);
 
+        result = a.addAll(b);
+        System.out.println("합집합: " + result.list);
+
+        result = a.removeAll(b);
+        System.out.println("차집합: " + result.list);
     }
 }
