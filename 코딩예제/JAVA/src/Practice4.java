@@ -9,7 +9,7 @@ public class Practice4 {
 
             while (n > 0){
                 int remain = n % 10;
-                sqaureSum = remain * remain;
+                sqaureSum += remain * remain;
                 n/= 10;
             }
 
@@ -19,7 +19,6 @@ public class Practice4 {
                 n = sqaureSum;
             }
         }
-
         return false;
     }
 
