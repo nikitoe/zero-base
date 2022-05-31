@@ -1,72 +1,35 @@
 
 public class Practice5 {
-    public static int solution(int[][] grid) {
-        int[][] directions = {{0, 1},{1, 0},{-1, 0},{0, -1}};
-        int cnt = 0; // 변의 갯 수
+    static StringBuffer sb;
 
-        int row = grid.length;
-        int col = grid[0].length;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if(grid[i][j] == 1){
-                    for(int[] d : directions){
-                        int x = i + d[0];
-                        int y = j + d[1];
+    public static void solution(int n) {
+        sb = new StringBuffer();
 
-                        if( x < 0 || y < 0 || x >= row || y >= col || grid[x][y] == 0){
-                            cnt++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return cnt;
-    }
-    
-    // 재귀 풀이
-    public static int solution2(int[][] grid) {
-        int[][] directions = {{0, 1},{1, 0},{-1, 0},{0, -1}};
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if(grid[i][j] == 1){
-                    return  recursion(grid, directions, i, j);
-                }
-            }
-        }
-
-        return 0;
+        hanoi(n, 1, 2, 3);
+        System.out.println(sb);
     }
 
-    public static int recursion(int[][] grid, int[][] directions, int i, int j) {
-        int row = grid.length;
-        int col = grid[0].length;
-
-        grid[i][j] = -1;
-        int cnt = 0;
-        for(int[] d : directions){
-            int x = i + d[0];
-            int y = j + d[1];
-            if(x < 0 || y < 0 || x >= row || y >= col || grid[x][y] == 0){
-                cnt++;
-            } else {
-                if(grid[x][y] == 1){
-                    cnt += recursion(grid, directions, x, y);
-                }
-            }
+    public static void hanoi(int n, int start, int mid, int to){
+        if( n == 1){
+            sb.append(start +" "+ to + "\n");
+            return;
         }
-        return cnt;
+
+        hanoi(n -1, start, to, mid);
+        sb.append(start +" "+ to + "\n");
+
+        hanoi(n -1, mid, start, to);
     }
+
 
     public static void main(String[] args) {
         // Test code
-        int[][] grid = {{1}};
-        System.out.println(solution(grid));
-        System.out.println(solution2(grid));
+        solution(2);
         System.out.println();
 
-        grid = new int[][]{{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}};
-        System.out.println(solution(grid));
-        System.out.println(solution2(grid));
+        solution(3);
+        System.out.println();
+
+        solution(4);
     }
 }

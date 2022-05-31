@@ -1,46 +1,42 @@
-import java.util.Arrays;
 
 public class Practice2 {
-    public static void solution(int[] arr) {
+    public static int solution(String str) {
+        return isPalindrome(0,str.length() - 1,str.toCharArray(), 0);
+    }
 
-        if(arr == null || arr.length < 2){
-            return;
-        }
+    public static int isPalindrome(int left, int right, char[] arr, int delCnt) {
 
+        while (left < right) {
+            if(arr[left] != arr[right]){
 
-        int idx = -1;
-        for (int i = arr.length -1; i >=1 ; i--) {
-            if(arr[i]< arr[i -1]){
-                idx = i - 1;
-                break;
+                if(delCnt == 0){
+                    if(isPalindrome(left + 1, right, arr, 1) == 0 ||
+                    isPalindrome(left, right - 1, arr, 1) == 0){
+                        return 1;
+                    } else {
+                        return 2;
+                    }
+                }else {
+                    return 2;
+                }
+            }else{
+                left++;
+                right--;
             }
         }
 
-        if(idx == -1){
-            System.out.println(Arrays.toString(arr));
-            return;
-        }
-
-        for (int i = arr.length - 1; i > idx ; i--) {
-            if(arr[i] < arr[idx] && arr[i] != arr[i -1]){
-                int tmp =arr[i];
-                arr[i] = arr[idx];
-                arr[idx] = tmp;
-                break;
-            }
-        }
-
+        return 0;
     }
 
     public static void main(String[] args) {
         // Test code
-        int[] arr = {3, 2, 1};
-        solution(arr);
-
-        arr = new int[]{1, 9, 4, 7, 6};
-        solution(arr);
-
-        arr = new int[]{1, 1, 2, 3};
-        solution(arr);
+        String[] str = {"abba", "summuus", "xabba", "xabbay", "comcom", "comwwmoc", "comwwtmoc"};
+        System.out.println(solution("abba"));
+        System.out.println(solution("summuus"));
+        System.out.println(solution("xabba"));
+        System.out.println(solution("xabbay"));
+        System.out.println(solution("comcom"));
+        System.out.println(solution("comwwmoc"));
+        System.out.println(solution("comwwtmoc"));
     }
 }

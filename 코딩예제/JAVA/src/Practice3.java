@@ -1,91 +1,83 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Practice3 {
-    // # 1 기본 permutation 방법
-    public static boolean solution(String s1, String s2) {
-        boolean[] visited = new boolean[s1.length()];
-        char[] out = new char[s1.length()];
-        ArrayList<String> list = new ArrayList<>();
-        permutation(s1.toCharArray(), 0, s1.length(), s1.length() , visited , out,list);
+    public static String solution(String equation) {
+        String[] parts = equation.split("=");
+        int[] leftSide = evaluate2(parts[0]);
+        int[] rightSide = evaluate2(parts[1]);
 
-        for(String s : list){
-            if(s2.contains(s)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static void permutation(char[] arr, int depth, int n, int r, boolean[] visited, char[] out, ArrayList<String> list) {
-        if (depth == r) {
-            list.add(new String(out));
-        }
-
-        for (int i = 0; i < n; i++) {
-            if (visited[i] != true) {
-                visited[i] = true;
-                out[depth] = arr[i];
-                permutation(arr, depth + 1, n, r, visited, out, list);
-                visited[i] = false;
-            }
+        if(leftSide[0] == rightSide[0] && leftSide[1] == rightSide[1]){
+            return "Infinite solutions";
+        } else if (leftSide[0] == rightSide[0]) {
+            return "No solution";
+        } else {
+            return "x=" + (rightSide[1] -leftSide[1]) / (leftSide[0] -rightSide[0]);
         }
     }
 
+    public static int[] evaluate(String str) {
+        int[] result = new int[2];
 
-    // # 2 문제 규칙 찾아 해결
-    public static boolean solution2(String s1, String s2) {
-        final int ALPHABET = 26;
-        if(s1.length() > s2.length()){
-            return false;
-        }
+        boolean isMinus = false;
+        int idx = 0;
+        while (idx != str.length()) {
+            char c = str.charAt(idx++);
 
-        int[] cnt = new int[ALPHABET];
-        for (int i = 0; i < s1.length() ; i++) {
-            cnt[s1.charAt(i) - 'a']++;
-        }
-
-        for (int i = 0; i < s2.length() ; i++) {
-            cnt[s2.charAt(i) - 'a']--;
-
-            if(i -s1.length() >= 0){
-                cnt[s2.charAt(i -s1.length()) - 'a']++;
+            if (c == '+'){
+                continue;
             }
 
-            boolean isZero = true;
-            for (int j = 0; j < ALPHABET; j++) {
-                if(cnt[j] != 0){
-                    isZero =false;
-                    break;
+            if (c == '-') {
+                isMinus = true;
+                continue;
+            }
+
+            if (c == 'x') {
+                result[0] += isMinus ? -1 : 1;
+            } else {
+                if (idx < str.length() && str.charAt(idx) == 'x') {
+                    result[0] += isMinus ? -(c - '0') : (c - '0');
+                } else {
+                    result[1] += isMinus ? -(c - '0') : (c - '0');
                 }
             }
+            isMinus = false;
 
-            if(isZero){
-                return true;
+        }
+
+
+        return result;
+    }
+
+    // # 2 정규표현식 사용
+    public static int[] evaluate2(String str) {
+        int[] result = new int[2];
+
+        for (String s :  str.split("(?=[+-])")){
+            if (s.equals("+x") || s.equals("x")){
+                result[0]++;
+            } else if (s.equals("-x")) {
+                result[0]--;
+            } else if (s.contains("x")) {
+                result[0] += Integer.parseInt(s.substring(0, s.length() - 1));
+            } else {
+                result[1] += Integer.parseInt(s);
             }
         }
 
-        System.out.println(Arrays.toString(cnt));
-        return false;
+        return result;
     }
 
     public static void main(String[] args) {
         // Test code
-        String s1 = "ab";
-        String s2 = "adbak";
-        System.out.println(solution(s1, s2));
-        System.out.println(solution2(s1, s2));
+        String equation = "x+5-3+x=6+x-2";
+        System.out.println(solution(equation));
         System.out.println();
 
-        s1 = "ac";
-        s2 = "car";
-        System.out.println(solution(s1, s2));
-        System.out.println(solution2(s1, s2));
-        System.out.println();
+        equation = "x=x";
+        System.out.println(solution(equation));
 
-        s1 = "ak";
-        s2 = "aabbkk";
-        System.out.println(solution(s1, s2));
-        System.out.println(solution2(s1, s2));
+        equation = "2x=x";
+        System.out.println(solution(equation));
     }
 }

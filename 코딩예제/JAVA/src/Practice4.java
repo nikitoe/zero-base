@@ -1,31 +1,27 @@
-import java.util.HashSet;
 
 public class Practice4 {
-    public static boolean solution(int n) {
-        HashSet<Integer> set = new HashSet<>();
+    final static int mod = (int) 1e9 + 7;
 
-        while (set.add(n)){
-            int sqaureSum = 0;
+    public static int solution(long n) {
+        return (int) (recursion(5 , (n + 1) /2) * recursion(4, n /2) % mod);
+    }
 
-            while (n > 0){
-                int remain = n % 10;
-                sqaureSum += remain * remain;
-                n/= 10;
-            }
-
-            if(sqaureSum == 1){
-                return true;
-            } else {
-                n = sqaureSum;
-            }
+    public static long recursion(long x, long y) {
+        if (y == 0) {
+            return 1;
         }
-        return false;
+
+        long p = recursion(x, y/2);
+        return p * p * (y % 2 > 0 ? x : 1) % mod;
     }
 
     public static void main(String[] args) {
         // Test code
-        System.out.println(solution(19));
+        System.out.println(mod);
+        System.out.println(solution(1));
         System.out.println(solution(2));
-        System.out.println(solution(61));
+        System.out.println(solution(3));
+        System.out.println(solution(4));
+        System.out.println(solution(50));
     }
 }
