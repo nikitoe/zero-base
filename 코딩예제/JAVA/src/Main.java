@@ -1,54 +1,34 @@
-// 선형 자료구조 - 배열
+// 선형 자료구조 - 스택
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Stack;
 
 public class Main {
-
     public static void main(String[] args) {
+        Stack stack = new Stack();
 
-//      1차원 배열
-        System.out.println("== 1차원 배열 ==");
-        int[] arr = {1, 2, 3, 4, 5};
-        for (int item: arr) {
-            System.out.println("item = " + item);
-        }
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        stack.push(4);
+        stack.push(5);
+        System.out.println(stack);
 
-        arr[1] = 100;
-        System.out.println("arr = " + arr);
+        System.out.println(stack.pop());
+        System.out.println(stack);
 
+        System.out.println(stack.pop());
+        System.out.println(stack);
 
-//      2차원 배열
-        System.out.println("== 2차원 배열 ==");
-        int[][] arr2 = {{1, 2, 3}, {4, 5, 6}};
-        System.out.println(arr2[0][1]);
+        System.out.println(stack.peek());
+        System.out.println(stack);
 
-        for(int[] row: arr2) {
-            for(int item: row) {
-                System.out.println("item = " + item);
-            }
-        }
+        System.out.println(stack.contains(1));
+        System.out.println(stack.size());
+        System.out.println(stack.empty());
 
-
-//      ArrayList - 1차원, 2차원
-        System.out.println("== ArrayList ==");
-        ArrayList list1 = new ArrayList(Arrays.asList(1, 2, 3));
-        System.out.println("list1 = " + list1);
-        list1.add(4);
-        list1.add(5);
-        System.out.println("list1 = " + list1);
-        list1.remove(2);
-        System.out.println("list1 = " + list1);
-        list1.remove(Integer.valueOf(2));
-        System.out.println("list1 = " + list1);
-
-        ArrayList list2d = new ArrayList();
-        ArrayList list1d1 = new ArrayList(Arrays.asList(1, 2, 3));
-        ArrayList list1d2 = new ArrayList(Arrays.asList(4, 5, 6));
-        list2d.add(list1d1);
-        list2d.add(list1d2);
-        System.out.println("list1d1 = " + list1d1);
-        System.out.println("list1d2 = " + list1d2);
-        System.out.println("list2d = " + list2d);
+        stack.clear();
+        System.out.println(stack);
+        System.out.println(stack.pop());
     }
+
 }
