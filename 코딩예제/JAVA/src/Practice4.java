@@ -1,124 +1,80 @@
 // Practice4
-// 데크 리사이즈
-// 기본 데크 구조에서 데크 공간이 full 일 때 데이터를 추가하는 경우,
-// 데크 공간을 2배 씩 늘려주는 코드를 작성하세요.
+// 해시 충돌 해결 - 개방 주소법 (이중 해싱)
 
-class MyDeque2 {
-    int[] arr;
-    int front = 0;
-    int rear = 0;
+class MyHashTable4 extends MyHashTable {
+    int c;
 
-    MyDeque2(int size) {
-        this.arr = new int[size + 1];
+    MyHashTable4(int size) {
+        super(size);
+        this.c = this.getHashC(size);
     }
 
-    public boolean isEmpty() {
-        return this.rear == this.front;
-    }
+    public int getHashC(int size) {
+        int c = 0;
 
-    public boolean isFull() {
-        return (this.rear + 1)  % this.arr.length == this.front;
-    }
-
-    public void increaseSize() {
-        System.out.println("MyDeque2.increaseSize");
-        int[] arrTmp = this.arr.clone();
-        this.arr = new int[this.arr.length * 2];
-
-        int start = (this.front + 1) % arrTmp.length;
-        int end = (this.rear + 1) % arrTmp.length;
-
-        int idx = 1;
-        for (int i = start; i != end ; i = (i + 1) % arrTmp.length) {
-            this.arr[idx++] = arrTmp[i];
+        if (size <= 2) {
+            return size;
         }
 
-        this.front = 0;
-        this.rear = idx - 1;
+        for (int i = size - 1; i > 2; i--) {
+            boolean isPrime = true;
+            for (int j = 2; j < i; j++) {
+                if (i % j == 0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+            if (isPrime) {
+                c = i;
+                break;
+            }
+        }
+        return c;
     }
 
-    public void addFirst(int data) {
-        if (this.isFull()) {
-//            System.out.println("Deque is full!");
-//            return;
-            this.increaseSize();
+    public int getHash2(int key) {
+        int hash = 1 + key % this.c;
+        return hash;
+    }
+
+    public void setValue(int key, int data) {
+        int idx = this.getHash(key);
+
+        if (this.elemCnt == this.table.length) {
+            System.out.println("Hash table is full!");
+            return;
+        } else if (this.table[idx] == null) {
+            this.table[idx] = data;
+        } else {
+            int newIdx = idx;
+            int cnt = 1;
+            while (true) {
+                newIdx = (newIdx + this.getHash2(newIdx) * cnt) % this.table.length;
+                if (this.table[newIdx] == null) {
+                    break;
+                }
+                cnt++;
+            }
+            this.table[newIdx] = data;
         }
 
-        this.arr[front] = data;
-        this.front = (this.front - 1 + this.arr.length) % this.arr.length;
+        elemCnt++;
     }
 
-    public void addLast(int data) {
-        if (this.isFull()) {
-//            System.out.println("Deque is full!");
-//            return;
-            this.increaseSize();
-        }
-
-        this.rear = (this.rear + 1) % this.arr.length;
-        this.arr[this.rear] = data;
-    }
-
-    public Integer removeFirst() {
-        if (this.isEmpty()) {
-            System.out.println("Deque is empty!");
-            return null;
-        }
-
-        this.front = (this.front + 1) % this.arr.length;
-        return this.arr[this.front];
-    }
-
-    public Integer removeLast() {
-        if (this.isEmpty()) {
-            System.out.println("Deque is empty!");
-            return null;
-        }
-
-        int data = this.arr[this.rear];
-        this.rear = (this.rear - 1 + this.arr.length) % this.arr.length;
-        return data;
-    }
-
-    public void printDeque() {
-        int start = (this.front + 1) % this.arr.length;
-        int end = (this.rear + 1) % this.arr.length;
-
-        for (int i = start; i != end; i = (i + 1) % this.arr.length) {
-            System.out.print(this.arr[i] + " ");
-        }
-        System.out.println();
-    }
 }
-
 public class Practice4 {
     public static void main(String[] args) {
         // Test code
-        MyDeque2 myDeque = new MyDeque2(5);
+        MyHashTable4 ht = new MyHashTable4(11);
+        ht.setValue(1, 10);
+        ht.setValue(2, 20);
+        ht.setValue(3, 30);
+        ht.printHashTable();
 
-        myDeque.addLast(1);
-        myDeque.addLast(2);
-        myDeque.addLast(3);
-        myDeque.addLast(4);
-        myDeque.addLast(5);
-        myDeque.printDeque();
 
-        myDeque.addLast(6);
-        myDeque.addLast(7);
-        myDeque.addLast(8);
-        myDeque.addLast(9);
-        myDeque.addLast(10);
-        myDeque.printDeque();
-
-        myDeque.removeLast();
-        myDeque.removeLast();
-        myDeque.addFirst(100);
-        myDeque.addFirst(200);
-        myDeque.printDeque();
-
-        myDeque.addFirst(300);
-        myDeque.addFirst(400);
-        myDeque.addFirst(500);
-        myDeque.printDeque();
+        ht.setValue(1, 100);
+        ht.setValue(1, 200);
+        ht.setValue(1, 300);
+        ht.printHashTable();
     }
 }

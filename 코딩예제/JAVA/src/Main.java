@@ -1,40 +1,52 @@
-// 선형 자료구조 - 데크
+// 선형 자료구조 - 해시 테이블
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class Main {
+    // 해시 함수
+    public static int getHash(int key) {
+        return key % 5;
+    }
+
     public static void main(String[] args) {
-        Deque deque = new ArrayDeque();
-        
-        // Front 부분 입력
-        deque.addFirst(1);
-        deque.addFirst(2);
-        deque.addFirst(3);
-        System.out.println(deque);
+        // 기본 해시 테이블 사용 방법
+        Hashtable<String, Integer> ht = new Hashtable();
 
-        // Rear 부분 입력
-        deque.addLast(10);
-        deque.addLast(20);
-        deque.addLast(30);
-        System.out.println(deque);
+        ht.put("key1", 10);
+        ht.put("key2", 20);
+        ht.put("key3", 30);
+//        ht.put("key3", 40);
+        for (Map.Entry<String, Integer> item: ht.entrySet()) {
+            System.out.println(item.getKey() + " - " + item.getValue());
+        }
 
-        // Front 부분 출력
-        System.out.println(deque.removeFirst());
-        System.out.println(deque);
+        System.out.println(ht.get("key1"));
+        System.out.println(ht.get("key2"));
 
-        // Rear 부분 출력
-        System.out.println(deque.removeLast());
-        System.out.println(deque);
+        ht.remove("key1");
+        for (Map.Entry<String, Integer> item: ht.entrySet()) {
+            System.out.println(item.getKey() + " - " + item.getValue());
+        }
 
-        System.out.println(deque.removeLast());
-        System.out.println(deque.removeLast());
-        System.out.println(deque.removeLast());
-        System.out.println(deque.removeLast());
-        System.out.println(deque);
+        // 해시 충돌 케이스 (해시 함수 사용)
+        Hashtable<Integer, Integer> ht2 = new Hashtable();
+        ht2.put(getHash(1), 10);
+        ht2.put(getHash(2), 20);
+        ht2.put(getHash(3), 30);
+        ht2.put(getHash(4), 40);
+        ht2.put(getHash(5), 50);
 
-        System.out.println(deque.pollLast());
-        System.out.println(deque.removeLast());
+        System.out.println("== 충돌 전 ==");
+        for (Map.Entry<Integer, Integer> item: ht2.entrySet()) {
+            System.out.println(item.getKey() + " - " + item.getValue());
+        }
+
+        System.out.println("== 충돌 후 ==");
+        ht2.put(getHash(6), 60);
+        for (Map.Entry<Integer, Integer> item: ht2.entrySet()) {
+            System.out.println(item.getKey() + " - " + item.getValue());
+        }
 
     }
 }

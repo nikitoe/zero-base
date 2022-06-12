@@ -1,52 +1,49 @@
 // Practice2
-// Palindrome 찾기
-// Palindrome 이면 true, 아니면 false 를 반환하세요.
-// Palindrome: 앞으로 읽어도 거꾸로 읽어도 같은 문자열
+// 해시 충돌 해결 - 개방 주소법 (선형 탐사법)
 
-// 입출력 예시)
-// 입력: a
-// 결과: true
+class MyHashTable2 extends MyHashTable {
 
-// 입력: madam
-// 결과: true
-
-// 입력: abab
-// 결과: false
-
-import java.util.ArrayDeque;
-import java.util.Deque;
-
-public class Practice2 {
-    public static boolean checkPalindrome(String str) {
-        Deque deque = new ArrayDeque();
-        boolean isFront = true;
-        boolean isPalindrome = true;
-
-        for (String s: str.split("")) {
-            deque.addFirst(s);
-        }
-
-        while (!deque.isEmpty()) {
-            String s1 = (String)deque.pollFirst();
-            String s2 = (String)deque.pollLast();
-
-            if (s1 != null && s2 != null && !s1.equals(s2)) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        return isPalindrome;
+    MyHashTable2(int size) {
+        super(size);
     }
 
+    public void setValue(int key, int data) {
+        int idx = this.getHash(key);
+
+        if (this.elemCnt == this.table.length) {
+            System.out.println("Hash table is full!");
+            return;
+        } else if (this.table[idx] == null) {
+            this.table[idx] = data;
+        } else {
+            int newIdx = idx;
+            while (true) {
+                newIdx = (newIdx + 1) % this.table.length;
+                if (this.table[newIdx] == null) {
+                    break;
+                }
+            }
+            this.table[newIdx] = data;
+        }
+
+        elemCnt++;
+    }
+}
+
+public class Practice2 {
     public static void main(String[] args) {
         // Test code
-        System.out.println(checkPalindrome("a"));       // true
-        System.out.println(checkPalindrome("aba"));     // true
-        System.out.println(checkPalindrome("abba"));    // true
-        System.out.println(checkPalindrome("abab"));    // false
-        System.out.println(checkPalindrome("abcba"));   // true
-        System.out.println(checkPalindrome("abccba"));  // true
-        System.out.println(checkPalindrome("madam"));  // true
+        MyHashTable2 ht = new MyHashTable2(5);
+        ht.setValue(1, 1);
+        ht.setValue(3, 3);
+        ht.printHashTable();
+
+        ht.setValue(1, 10);
+        ht.printHashTable();
+
+        ht.setValue(1, 20);
+        ht.setValue(1, 30);
+        ht.setValue(1, 40);
+        ht.printHashTable();
     }
 }

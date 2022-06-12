@@ -1,52 +1,59 @@
 // Practice1
-// 데이터 재정렬
-// D_0 -> D_1 -> ... -> D_n-1 -> D_n 순으로 되어 있는 데이터를
-// D_0 -> D_n -> D_1 -> D_n-1 -> ... 순이 되도록 재정렬 하시오.
+// 해시 테이블 배열로 직접 구현
 
-// 입력 예시)
-// 입력 데이터: 1 -> 2 -> 3 -> 4 -> 5
-// 출력 데이터: 1 -> 5 -> 2 -> 4 -> 3
+class MyHashTable {
+    Integer[] table;
+    int elemCnt;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.stream.IntStream;
+    MyHashTable() {}
+
+    MyHashTable(int size) {
+        this.table = new Integer[size];
+        this.elemCnt = 0;
+    }
+
+    public int getHash(int key) {
+        return key % this.table.length;
+    }
+
+    public void setValue(int key, int data) {
+        int idx = this.getHash(key);
+        this.table[idx] = data;
+        this.elemCnt++;
+    }
+
+    public int getValue(int key) {
+        int idx = this.getHash(key);
+        return this.table[idx];
+    }
+
+    public void removeValue(int key) {
+        int idx = this.getHash(key);
+        this.table[idx] = null;
+        this.elemCnt--;
+    }
+
+    public void printHashTable() {
+        System.out.println("== Hash Table ==");
+        for (int i = 0; i < this.table.length; i++) {
+            System.out.println(i + ": " + this.table[i]);
+        }
+    }
+
+}
 
 public class Practice1 {
-    public static void reorderData(int[] arr) {
-        Deque deque = new ArrayDeque();
-        ArrayList result = new ArrayList();
-
-        IntStream.of(arr).forEach(x -> deque.addLast(x));
-        System.out.println(deque);
-
-        while (!deque.isEmpty()) {
-            result.add(deque.removeFirst());
-
-            if (!deque.isEmpty()) {
-                result.add(deque.removeLast());
-            }
-        }
-
-        System.out.println("== 정렬 전 ==");
-        printData(arr);
-        System.out.println("== 정렬 후 ==");
-        printData(result.stream().mapToInt(x -> (int)x).toArray());
-    }
-
-    public static void printData(int[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
-            System.out.print(arr[i] + " -> ");
-        }
-        System.out.println(arr[arr.length - 1]);
-    }
 
     public static void main(String[] args) {
         // Test code
-        int[] arr = {1, 2, 3, 4, 5};
-        reorderData(arr);   // 1 -> 5 -> 2 -> 4 -> 3
-
-        int[] arr2 = {1, 2, 3, 4, 5, 6, 7};
-        reorderData(arr2);  // 1 -> 7 -> 2 -> 6 -> 3 -> 5 -> 4
+        MyHashTable ht = new MyHashTable(7);
+        ht.setValue(1, 1);
+        ht.setValue(2, 2);
+        ht.setValue(3, 3);
+        ht.setValue(4, 4);
+        ht.setValue(5, 5);
+        ht.printHashTable();
+        ht.setValue(8, 6);
+        ht.printHashTable();
     }
 }
