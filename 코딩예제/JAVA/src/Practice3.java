@@ -1,43 +1,79 @@
-// Practice3
-// 참고 - Hashtable? HashMap?
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+class Node {
+    int data;
+    int cmd;
+    boolean visited;
+    Node next;
+    Node prev;
+
+    public Node(int data, int cmd, boolean visited, Node next, Node prev) {
+        this.data = data;
+        this.cmd = cmd;
+        this.visited = visited;
+        this.next = next;
+        this.prev = prev;
+    }
+
+
+}
+
+class LinkedListC {
+    Node head;
+
+    public void add(int data, int cmd) {
+        if (this.head == null) {
+            this.head = new Node(data, cmd, false, null, null);
+            this.head.next = this.head;
+            this.head.prev = this.head;
+        } else {
+            Node cur = this.head;
+            while(cur.next != this.head) {
+                cur = cur.next;
+            }
+            cur.next = new Node(data, cmd,false, cur.next, cur);
+            this.head.prev = cur.next;
+        }
+    }
+}
 
 public class Practice3 {
+    public static void solution(int[] data) {
+        LinkedListC linkedList = new LinkedListC();
+        for (int i = 0; i < data.length; i++) {
+            linkedList.add(i + 1, data[i]);
+        }
+
+        Node cur = linkedList.head;
+
+        int visitCnt = 0;
+        int cmd = 0;
+        while (visitCnt != data.length) {
+            int cnt = 0;
+            while (cnt != Math.abs(cmd)) {
+                if (cmd > 0) {
+                    cur = cur.next;
+                } else {
+                    cur = cur.prev;
+                }
+
+                if (cur.visited == false) {
+                    cnt++;
+                }
+            }
+            System.out.print(cur.data + " ");
+            cur.visited = true;
+            visitCnt++;
+            cmd = cur.cmd;
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
-        // Hashtable
-        Hashtable<Integer, Integer> ht = new Hashtable<>();
-        ht.put(0, 10);
-        System.out.println(ht.get(0));
+        int[] balloon = {3, 2, 1, -3, -1};
+        solution(balloon);
 
-        // HashMap
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        hm.put(0, 10);
-        System.out.println(hm.get(0));
-
-        // Map 인터페이스 (다형성)
-        Map<Integer, Integer> map1 = ht;
-        Map<Integer, Integer> map2 = hm;
-        System.out.println(map1.get(0));
-        System.out.println(map2.get(0));
-
-//        ht.put(null, -999);
-//        System.out.println(ht.get(null));
-
-        hm.put(null, -999);
-        System.out.println(hm.get(null));
-
-        // Hashtable 과 HashMap 차이
-        // 공통: 둘 다 Map 인터페이스를 구현한 것
-        // 차이:
-        // Thread-safe
-            // Hashtable: O (멀티 스레드 환경에서 우수)
-            // HashMap: X   (싱글 스레드 환경에서 우수)
-            // 참고) synchronizedMap, ConcurrentHashMap
-        // Key 에 Null 사용 여부
-            // Hashtable: X
-            // HashMap: O
+        System.out.println();
+        balloon = new int[]{3, 2, -1, -2};
+        solution(balloon);
     }
 }

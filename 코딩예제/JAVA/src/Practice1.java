@@ -1,38 +1,59 @@
-// Practice1
-// 해시 테이블을 이용한 수 찾기
-// 주어진 첫 번째 배열을 이용하여 해시 테이블을 초기화 한 후
-// 두 번째 배열이 주어졌을 때 해당 배열 내 데이터가 해시 테이블에 있는지 확인하는 코드를 작성하세요.
-
-// 입출력 예시)
-// 배열1: 1, 3, 5, 7, 9
-// 배열2: 1, 2, 3, 4, 5
-// 출력: True, False, True, False, True
-
-import java.util.Hashtable;
+import java.util.Arrays;
 
 public class Practice1 {
-    public static void solution(int[] arr1, int[] arr2) {
-        Hashtable<Integer, Integer> ht = new Hashtable<>();
-        // 해시 테이블 구성
-        for (int i = 0; i < arr1.length; i++) {
-            ht.put(arr1[i], arr1[i]);
-        }
-        
-        // 포함하고 있으면 true, 없으면 false 출력
-        for (int i = 0; i < arr2.length; i++) {
-            if(ht.containsKey(arr2[i])) {
-                System.out.print("True ");
-            } else {
-                System.out.print("False ");
+
+    public static int[] solution(int[] arr){
+        int[] arrNew = new int[arr.length];
+
+        int index = 0;
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if(arrNew[index] == 0) {
+                    break;
+                }
+                index = (index + 1) % arr.length;
             }
+            arrNew[index] = arr[i];
+            index = (index + arr[i]) % arr.length;
         }
-        System.out.println();
+        return arrNew;
     }
+
+    public static int[] modification(int[] arr) {
+        int[] arrNew = new int[arr.length];
+
+        int idx = 0;
+        int cnt = 0;
+        int val = arr[idx];
+
+        while (cnt < arr.length) {
+            while (val == 0) {
+                idx = (idx + 1) % arr.length;
+                val = arr[idx];
+            }
+            arrNew[cnt++] = val;
+            arr[idx] = 0;
+            idx = (val + idx) % arr.length;
+            val = arr[idx];
+        }
+        return arrNew;
+    }
+
 
     public static void main(String[] args) {
         // Test code
-        int[] arr1 = {1, 3, 5, 7, 9};
-        int[] arr2 = {1, 2, 3, 4, 5};
-        solution(arr1, arr2);
+        // Modification test
+        int[] arr = {1, 3, 7, 9, 5};
+        int[] arrNew = modification(arr);
+        System.out.println(Arrays.toString(arrNew));
+
+        // Revert data
+        arr = new int[]{1, 3, 5, 7, 9};
+        int[] arrOrigin = solution(arr);
+        System.out.println(Arrays.toString(arrOrigin));
+
+        arr = new int[]{3, 2, 6, 8};
+        arrOrigin = solution(arr);
+        System.out.println(Arrays.toString(arrOrigin));
     }
 }

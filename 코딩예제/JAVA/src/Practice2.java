@@ -1,53 +1,59 @@
-// Practice2
-// 정수형 배열 nums 와 target 이 주어졌을 때,
-// nums 에서 임의의 두 수를 더해 target 을 구할 수 있는지 확인하는 프로그램을 작성하세요.
-// 두 수 의 합으로 target 을 구할 수 있으면 해당 값의 index 를 반환하고,
-// 없는 경우 null 을 반환하세요.
-
-// 입출력 예시
-// nums: 7, 11, 5, 3
-// target: 10
-// 출력: 0, 3
-
-// nums: 8, 3, -2
-// target: 6
-// 출력: 0, 2
-
-
-import java.util.Arrays;
-import java.util.Hashtable;
 
 public class Practice2 {
-    public static int[] solution(int[] numbers, int target) {
-        int[] result = new int[2];
-        Hashtable<Integer, Integer> ht = new Hashtable<>();
 
-        // 해시 테이블을 full 로 구성하고 시작 x
-        // 현재 값이 해시테이블에 있는지 검사
-            // 있으면 구간 result 에 설정 후 break
-            // 없으면 target - 현재 값 을 해시 테이블에 추가
-        
-        for (int i = 0; i < numbers.length; i++) {
-            if (ht.containsKey(numbers[i])) {
-                result[0] = ht.get(numbers[i]);
-                result[1] = i;
-                return result;
+    public static void solution(int[][] matrix) {
+        boolean frZero = false;
+        boolean fcZero = false;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    if (i == 0) {
+                        frZero = true;
+                    }
+                    if (j == 0) {
+                        fcZero = true;
+                    }
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
             }
-            ht.put(target - numbers[i], i);
         }
 
-        return null;
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        if (frZero) {
+            for (int i = 0; i < matrix[0].length; i++) {
+                matrix[0][i] = 0;
+            }
+        }
+
+        if (fcZero) {
+            for (int i = 0; i < matrix[0].length; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     public static void main(String[] args) {
         // Test code
-        int[] nums = {7, 11, 5, 3};
-        System.out.println(Arrays.toString(solution(nums, 10)));
+        int[][] matrix = {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}};
+        solution(matrix);
 
-        nums = new int[]{8, 3, -2};
-        System.out.println(Arrays.toString(solution(nums, 6)));
-
-        nums = new int[]{1, 2, 3};
-        System.out.println(Arrays.toString(solution(nums, 12)));
+        System.out.println();
+        matrix = new int[][]{{1, 1, 0}, {1, 1, 1}, {0, 1, 1}};
+        solution(matrix);
     }
 }
