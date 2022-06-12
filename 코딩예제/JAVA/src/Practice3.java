@@ -1,52 +1,43 @@
 // Practice3
-// 해시 충돌 해결 - 개방 주소법 (제곱 탐사법)
+// 참고 - Hashtable? HashMap?
 
-class MyHashTable3 extends MyHashTable {
-
-    MyHashTable3(int size) {
-        super(size);
-    }
-
-    public void setValue(int key, int data) {
-        int idx = this.getHash(key);
-
-        if (this.elemCnt == this.table.length) {
-            System.out.println("Hash table is full!");
-            return;
-        } else if (this.table[idx] == null) {
-            this.table[idx] = data;
-        } else {
-            int newIdx = idx;
-            int cnt = 0;
-            while (true) {
-                newIdx = (newIdx + (int)Math.pow(2, cnt)) % this.table.length;
-                if (this.table[newIdx] == null) {
-                    break;
-                }
-                cnt++;
-            }
-            this.table[newIdx] = data;
-        }
-
-        elemCnt++;
-    }
-}
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class Practice3 {
     public static void main(String[] args) {
-        // Test code
-        MyHashTable3 ht = new MyHashTable3(11);
-        ht.setValue(1, 10);
-        ht.setValue(2, 20);
-        ht.setValue(4, 40);
-        ht.printHashTable();
+        // Hashtable
+        Hashtable<Integer, Integer> ht = new Hashtable<>();
+        ht.put(0, 10);
+        System.out.println(ht.get(0));
 
-        ht.setValue(1, 100);
-        ht.printHashTable();
+        // HashMap
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0, 10);
+        System.out.println(hm.get(0));
 
-        ht.setValue(1, 200);
-        ht.setValue(1, 300);
-        ht.setValue(1, 400);
-        ht.printHashTable();
+        // Map 인터페이스 (다형성)
+        Map<Integer, Integer> map1 = ht;
+        Map<Integer, Integer> map2 = hm;
+        System.out.println(map1.get(0));
+        System.out.println(map2.get(0));
+
+//        ht.put(null, -999);
+//        System.out.println(ht.get(null));
+
+        hm.put(null, -999);
+        System.out.println(hm.get(null));
+
+        // Hashtable 과 HashMap 차이
+        // 공통: 둘 다 Map 인터페이스를 구현한 것
+        // 차이:
+        // Thread-safe
+            // Hashtable: O (멀티 스레드 환경에서 우수)
+            // HashMap: X   (싱글 스레드 환경에서 우수)
+            // 참고) synchronizedMap, ConcurrentHashMap
+        // Key 에 Null 사용 여부
+            // Hashtable: X
+            // HashMap: O
     }
 }
