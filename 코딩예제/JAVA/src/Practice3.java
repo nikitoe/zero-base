@@ -1,79 +1,80 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Map;
 
-class Node {
-    int data;
-    int cmd;
-    boolean visited;
-    Node next;
-    Node prev;
+class Song {
+    int no;
+    int play;
 
-    public Node(int data, int cmd, boolean visited, Node next, Node prev) {
-        this.data = data;
-        this.cmd = cmd;
-        this.visited = visited;
-        this.next = next;
-        this.prev = prev;
-    }
-
-
-}
-
-class LinkedListC {
-    Node head;
-
-    public void add(int data, int cmd) {
-        if (this.head == null) {
-            this.head = new Node(data, cmd, false, null, null);
-            this.head.next = this.head;
-            this.head.prev = this.head;
-        } else {
-            Node cur = this.head;
-            while(cur.next != this.head) {
-                cur = cur.next;
-            }
-            cur.next = new Node(data, cmd,false, cur.next, cur);
-            this.head.prev = cur.next;
-        }
+    public Song(int no, int play) {
+        this.no = no;
+        this.play = play;
     }
 }
 
 public class Practice3 {
-    public static void solution(int[] data) {
-        LinkedListC linkedList = new LinkedListC();
-        for (int i = 0; i < data.length; i++) {
-            linkedList.add(i + 1, data[i]);
+    public static void solution(String[] genres, int[] plays) {
+        Hashtable<String, ArrayList<Song>> ht = new Hashtable<>();
+
+        for (int i = 0; i < genres.length; i++) {
+            if(ht.containsKey(genres[i])){
+                ArrayList<Song> cur = ht.get(genres[i]);
+
+                int idx = -1;
+                for (int j = 0; j < cur.size(); j++) {
+                    if (plays[i] > cur.get(j).play ||
+                            plays[i] == cur.get(j).play && i < cur.get(j).no) {
+                        idx = j;
+                        break;
+                    }
+                }
+
+                if(idx == -1){
+                    cur.add(new Song(i, plays[i]));
+                } else {
+                    cur.add(idx, new Song(i, plays[i]));
+                }
+
+                ht.put(genres[i], cur);
+            } else {
+                Song s = new Song(i, plays[i]);
+                ht.put(genres[i], new ArrayList<>(Arrays.asList(s)));
+            }
         }
 
-        Node cur = linkedList.head;
+        Hashtable<String, Integer> htPlay = new Hashtable<>();
+        for (String item : ht.keySet()){
+            int sum = 0;
+            ArrayList<Song> cur = ht.get(item);
 
-        int visitCnt = 0;
-        int cmd = 0;
-        while (visitCnt != data.length) {
-            int cnt = 0;
-            while (cnt != Math.abs(cmd)) {
-                if (cmd > 0) {
-                    cur = cur.next;
-                } else {
-                    cur = cur.prev;
-                }
+            for (int i = 0; i < cur.size(); i++) {
+                sum += cur.get(i).play;
+            }
+            htPlay.put(item,sum);
+        }
 
-                if (cur.visited == false) {
-                    cnt++;
+        ArrayList<Map.Entry<String, Integer>> htPlaySort = new ArrayList<>(htPlay.entrySet());
+        htPlaySort.sort((x1, x2) -> x2.getValue() - x2.getValue());
+
+        for(Map.Entry<String, Integer> item : htPlaySort){
+            ArrayList<Song> songs = ht.get(item.getKey());
+
+            for (int i = 0; i < songs.size(); i++) {
+                System.out.print(songs.get(i).no + " ");
+                if(i == 1){
+                    break;
                 }
             }
-            System.out.print(cur.data + " ");
-            cur.visited = true;
-            visitCnt++;
-            cmd = cur.cmd;
         }
         System.out.println();
     }
-
     public static void main(String[] args) {
-        int[] balloon = {3, 2, 1, -3, -1};
-        solution(balloon);
+        // Test code
+        String[] genres = {"classic", "pop", "classic", "classic", "pop"};
+        int[] plays = {500, 600, 150, 800, 2500};
+        solution(genres, plays);
 
-        System.out.println();
-        balloon = new int[]{3, 2, -1, -2};
-        solution(balloon);
     }
 }

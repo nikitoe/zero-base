@@ -1,59 +1,57 @@
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Doc {
+    int no;
+    int priority;
+
+    public Doc(int no, int priority) {
+        this.no = no;
+        this.priority = priority;
+    }
+}
 
 public class Practice1 {
+    public static void solution(int docs, int target, int[] priority) {
+        Queue<Doc> queue = new LinkedList();
 
-    public static int[] solution(int[] arr){
-        int[] arrNew = new int[arr.length];
+        for (int i = 0; i < docs; i++) {
+            queue.add(new Doc(i, priority[i]));
+        }
 
-        int index = 0;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                if(arrNew[index] == 0) {
+        int cnt = 1;
+        while (true) {
+            Doc cur = queue.poll();
+
+            Doc[] highP = queue.stream().filter(x -> x.priority > cur.priority).toArray(Doc[]::new);
+
+            if (highP.length > 0) {
+                queue.add(cur);
+            } else {
+                if (cur.no == target) {
+                    System.out.println(cnt);
                     break;
                 }
-                index = (index + 1) % arr.length;
+                cnt++;
             }
-            arrNew[index] = arr[i];
-            index = (index + arr[i]) % arr.length;
         }
-        return arrNew;
     }
-
-    public static int[] modification(int[] arr) {
-        int[] arrNew = new int[arr.length];
-
-        int idx = 0;
-        int cnt = 0;
-        int val = arr[idx];
-
-        while (cnt < arr.length) {
-            while (val == 0) {
-                idx = (idx + 1) % arr.length;
-                val = arr[idx];
-            }
-            arrNew[cnt++] = val;
-            arr[idx] = 0;
-            idx = (val + idx) % arr.length;
-            val = arr[idx];
-        }
-        return arrNew;
-    }
-
 
     public static void main(String[] args) {
         // Test code
-        // Modification test
-        int[] arr = {1, 3, 7, 9, 5};
-        int[] arrNew = modification(arr);
-        System.out.println(Arrays.toString(arrNew));
+        int docs = 1;
+        int target = 0;
+        int[] priority = {5};
+        solution(docs, target, priority);
 
-        // Revert data
-        arr = new int[]{1, 3, 5, 7, 9};
-        int[] arrOrigin = solution(arr);
-        System.out.println(Arrays.toString(arrOrigin));
+        docs = 4;
+        target = 2;
+        priority = new int[]{1, 2, 3, 4};
+        solution(docs, target, priority);
 
-        arr = new int[]{3, 2, 6, 8};
-        arrOrigin = solution(arr);
-        System.out.println(Arrays.toString(arrOrigin));
+        docs = 6;
+        target = 0;
+        priority = new int[]{1, 1, 9, 1, 1, 1};
+        solution(docs, target, priority);
     }
 }

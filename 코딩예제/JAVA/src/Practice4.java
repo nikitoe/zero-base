@@ -1,46 +1,45 @@
 
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.Hashtable;
 
 public class Practice4 {
-    public static void solution(String str) {
-        Stack<String> stack = new Stack();
-        boolean checkFlag = true;
+    public static String solution(String[] participant, String[] completion) {
+        String result= "";
+        Hashtable<String, Integer> ht = new Hashtable<>();
 
-        HashMap<String, String> map = new HashMap();
-        map.put("(", ")");
-        map.put("{", "}");
-        map.put("[", "]");
-
-        for(String s: str.split("")) {
-            if (map.containsKey(s)) {
-                stack.push(s);
-            } else if (map.containsValue(s)) {
-                if (stack.isEmpty()) {
-                    checkFlag = false;
-                    break;
-                } else {
-                    String cur = stack.pop();
-                    if (!s.equals(map.get(cur))) {
-                        checkFlag = false;
-                        break;
-                    }
-                }
+        for(String item : participant){
+            if(ht.containsKey(item)){
+                ht.put(item, ht.get(item) + 1);
+                System.out.println(ht.get(item));
+            }else {
+                ht.put(item, 1);
             }
         }
 
-        if (checkFlag && stack.isEmpty()) {
-            System.out.println("PASS");
-        } else {
-            System.out.println("FAIL");
+        for(String item : completion){
+            ht.put(item, ht.get(item) -1);
         }
+
+        for(String item : participant){
+            if(ht.get(item) > 0){
+                result = item;
+                break;
+            }
+        }
+        return result;
     }
 
     public static void main(String[] args) {
         // Test code
-        solution("[yyyy]-[mm]-[dd]");               // Pass
-        solution("System.out.println(arr[0][1))");  // FAIL
-        solution("Support [Java or Python(3.x)]");  // PASS
-        solution("([[{}])");                        // FAIL
+        String[] participant = {"leo", "kiki", "eden"};
+        String[] completion = {"eden", "kiki"};
+        System.out.println(solution(participant, completion));
+
+        participant = new String[]{"marina", "josipa", "nikola", "vinko", "filipa"};
+        completion = new String[]{"josipa", "filipa", "marina", "nikola"};
+        System.out.println(solution(participant, completion));
+
+        participant = new String[]{"mislav", "stanko", "mislav", "ana"};
+        completion = new String[]{"stanko", "ana", "mislav"};
+        System.out.println(solution(participant, completion));
     }
 }

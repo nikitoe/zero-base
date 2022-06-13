@@ -1,59 +1,41 @@
+import java.util.ArrayList;
+import java.util.Stack;
 
 public class Practice2 {
+    public static void solution(int[] nums) {
+        Stack<Integer> stack = new Stack<>();
+        ArrayList<String> result = new ArrayList<>();
 
-    public static void solution(int[][] matrix) {
-        boolean frZero = false;
-        boolean fcZero = false;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (matrix[i][j] == 0) {
-                    if (i == 0) {
-                        frZero = true;
-                    }
-                    if (j == 0) {
-                        fcZero = true;
-                    }
-                    matrix[i][0] = 0;
-                    matrix[0][j] = 0;
+        int idx = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+
+            if (num > idx) {
+                for (int j = idx + 1; j < num + 1; j++) {
+                    stack.push(j);
+                    result.add("+");
                 }
+                idx = num;
+            } else if (stack.peek() != num) {
+                System.out.println("NO");
+                return;
             }
+            stack.pop();
+            result.add("-");
         }
+        for(String item : result){
+            System.out.print(item);
+        }
+        System.out.println();
 
-        for (int i = 1; i < matrix.length; i++) {
-            for (int j = 1; j < matrix[0].length; j++) {
-                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-
-        if (frZero) {
-            for (int i = 0; i < matrix[0].length; i++) {
-                matrix[0][i] = 0;
-            }
-        }
-
-        if (fcZero) {
-            for (int i = 0; i < matrix[0].length; i++) {
-                matrix[i][0] = 0;
-            }
-        }
-
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 
     public static void main(String[] args) {
-        // Test code
-        int[][] matrix = {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}};
-        solution(matrix);
+        int[] nums = {4, 3, 6, 8, 7, 5, 2, 1};
+        solution(nums);
 
-        System.out.println();
-        matrix = new int[][]{{1, 1, 0}, {1, 1, 1}, {0, 1, 1}};
-        solution(matrix);
+        System.out.println("=====");
+        nums = new int[]{1, 2, 5, 3, 4};
+        solution(nums);
     }
 }

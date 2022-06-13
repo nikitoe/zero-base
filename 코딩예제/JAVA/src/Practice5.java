@@ -1,108 +1,91 @@
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.stream.Stream;
 
 public class Practice5 {
-    public static Integer solution(int n, int k, int l, ArrayList<ArrayList> apples, Queue<ArrayList> moves) {
-        int[][] board = new int[n + 1][n + 1];
-        for (ArrayList item: apples) {
-            board[(int)item.get(0)][(int)item.get(1)] = 1;
+    public static ArrayList<Integer> solution(String[] gems) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+
+        HashSet<String> set = new HashSet<>();
+        Stream.of(gems).forEach(x -> set.add(x));
+
+        int n = set.size();
+
+        if (n ==1){
+            result.add(new ArrayList<>(Arrays.asList(1 , 1)));
+            return result.get(0);
         }
 
-        Queue<ArrayList> snake = new LinkedList();
-        snake.add(new ArrayList(Arrays.asList(1, 1)));
+        Hashtable<String, Integer> ht = new Hashtable<>();
+        boolean isCandidate = false;
 
-        ArrayList<ArrayList> direction = new ArrayList();
-        direction.add(new ArrayList(Arrays.asList(0, 1)));
-        direction.add(new ArrayList(Arrays.asList(1, 0)));
-        direction.add(new ArrayList(Arrays.asList(0, -1)));
-        direction.add(new ArrayList(Arrays.asList(-1, 0)));
-        int dIdx = 0;
-        int score = 0;
-        int x = 1;
-        int y = 1;
+        int left = 0;
+        int right = 0;
+        ht.put(gems[0], 1);
 
         while (true) {
-            score += 1;
-            x += (int)direction.get(dIdx).get(0);
-            y += (int)direction.get(dIdx).get(1);
-
-            if (1 <= x && x <= n && 1 <= y && y <= n) {
-                ArrayList cur = new ArrayList(Arrays.asList(x, y));
-                if (snake.contains(cur)) {
-                    return score;
+            if(isCandidate == false){
+                right += 1;
+                if(right >= gems.length){
+                    break;
                 }
-                snake.add(cur);
 
-                if (board[x][y] == 0) {
-                    snake.poll();
-                } else if (board[x][y] == 1) {
-                    board[x][y] = 0;
+                if(ht.containsKey(gems[right]) == false){
+                    ht.put(gems[right], 1);
+                }else {
+                    ht.put(gems[right], ht.get(gems[right]) + 1);
                 }
-            } else {
-                return score;
-            }
 
-            if (moves.size() > 0 && score == (int)moves.peek().get(0)) {
-                if ((char)moves.peek().get(1) == 'D') {
-                    dIdx = (dIdx + 1) % 4;
-                    moves.poll();
-                } else if ((char)moves.peek().get(1) == 'L') {
-                    dIdx = (dIdx - 1) % 4;
-                    moves.poll();
+                if(ht.size() == n){
+                    isCandidate = true;
+                    result.add(new ArrayList<>(Arrays.asList(left +1, right + 1)));
+                }
+            }else {
+                left += 1;
+                int cnt = ht.get(gems[left - 1]) - 1;
+
+                if(cnt == 0){
+                    ht.remove(gems[left -1]);
+                    isCandidate = false;
+                } else {
+                    ht.put(gems[left - 1], cnt);
+                    result.add(new ArrayList<>(Arrays.asList(left + 1 , right +1)));
                 }
             }
         }
+
+        int minIdx = 0;
+        int minNum = Integer.MAX_VALUE;
+        for (int i = 0; i < result.size(); i++) {
+            ArrayList<Integer> cur = result.get(i);
+            left = cur.get(0);
+            right = cur.get(1);
+
+            if (right - left < minNum) {
+                minNum = right - left;
+                minIdx = i;
+            }
+        }
+
+        return result.get(minIdx);
     }
 
     public static void main(String[] args) {
         // Test code
-        int n = 6;
-        int k = 3;
-        int l = 3;
-        ArrayList<ArrayList> apples = new ArrayList();
-        apples.add(new ArrayList<>(Arrays.asList(3, 4)));
-        apples.add(new ArrayList<>(Arrays.asList(2, 5)));
-        apples.add(new ArrayList<>(Arrays.asList(5, 3)));
+        String[] gems = {"DIA", "RUBY", "RUBY", "DIA", "DIA", "EMERALD", "SAPPHIRE", "DIA"};
+        System.out.println(solution(gems));
 
-        Queue<ArrayList> moves = new LinkedList();
-        moves.add(new ArrayList(Arrays.asList(3, 'D')));
-        moves.add(new ArrayList(Arrays.asList(15, 'L')));
-        moves.add(new ArrayList(Arrays.asList(7, 'D')));
-        System.out.println((solution(n, k, l, apples, moves)));
+        gems = new String[]{"AA", "AB", "AC", "AA", "AC"};
+        System.out.println(solution(gems));
 
-        n = 10;
-        k = 4;
-        l = 4;
-        apples.clear();
-        apples.add(new ArrayList<>(Arrays.asList(1, 2)));
-        apples.add(new ArrayList<>(Arrays.asList(1, 3)));
-        apples.add(new ArrayList<>(Arrays.asList(1, 4)));
-        apples.add(new ArrayList<>(Arrays.asList(1, 5)));
+        gems = new String[]{"XYZ", "XYZ", "XYZ"};
+        System.out.println(solution(gems));
 
-        moves.clear();
-        moves.add(new ArrayList(Arrays.asList(8, 'D')));
-        moves.add(new ArrayList(Arrays.asList(10, 'D')));
-        moves.add(new ArrayList(Arrays.asList(11, 'D')));
-        moves.add(new ArrayList(Arrays.asList(13, 'L')));
-        System.out.println((solution(n, k, l, apples, moves)));
-
-        n = 10;
-        k = 5;
-        l = 4;
-        apples.clear();
-        apples.add(new ArrayList<>(Arrays.asList(1, 5)));
-        apples.add(new ArrayList<>(Arrays.asList(1, 3)));
-        apples.add(new ArrayList<>(Arrays.asList(1, 2)));
-        apples.add(new ArrayList<>(Arrays.asList(1, 6)));
-        apples.add(new ArrayList<>(Arrays.asList(1, 7)));
-
-        moves.clear();
-        moves.add(new ArrayList(Arrays.asList(8, 'D')));
-        moves.add(new ArrayList(Arrays.asList(10, 'D')));
-        moves.add(new ArrayList(Arrays.asList(11, 'D')));
-        moves.add(new ArrayList(Arrays.asList(13, 'L')));
-        System.out.println((solution(n, k, l, apples, moves)));
+        gems = new String[]{"ZZZ", "YYY", "NNNN", "YYY", "BBB"};
+        System.out.println(solution(gems));
     }
 }
