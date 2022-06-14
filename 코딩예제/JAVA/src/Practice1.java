@@ -1,87 +1,54 @@
 // Practice1
-// 배열을 이용한 이진 트리 구성, 순회
+// 종이 접기
+// 종이를 반으로 접었을 때, 안으로 파인 부분은 0, 볼록 튀어나온 부분은 1이라고 하자.
+// 종이를 접을 때는 오른쪽에서 왼쪽으로 접는다.
+// 종이를 N번 접었을 때의 접힌 상태를 출력하는 문제를 작성하세요.
 
-class BinaryTree {
-    char[] arr;
+// 입출력 예시
+// 입력: 1
+// 출력: 0
 
-    BinaryTree (char[] data){
-        this.arr = data.clone();
-    }
+// 입력: 2
+// 출력: 0, 0, 1
 
-    public void preOrder(int idx){
-        System.out.print(this.arr[idx] + " ");
+// 입력: 3
+// 출력: 0, 0, 1, 0, 0, 1, 1
 
-        int left = 2 * idx + 1;
-        int right = 2 * idx + 2;
-        if(left < this.arr.length){
-            this.preOrder(left);
-        }
-
-        if(right < this.arr.length){
-            this.preOrder(right);
-        }
-    }
-
-    public void inOrder(int idx) {
-        int left = 2 * idx + 1;
-        int right = 2 * idx + 2;
-
-        if(left < this.arr.length){
-            this.inOrder(left);
-        }
-
-        System.out.print(this.arr[idx] + " ");
-
-        if(right < this.arr.length){
-            this.inOrder(right);
-        }
-    }
-    public void postOrder(int idx){
-        int left = 2 * idx + 1;
-        int right = 2 * idx + 2;
-
-        if(left < this.arr.length){
-            this.postOrder(left);
-        }
-
-        if(right < this.arr.length){
-            this.postOrder(right);
-        }
-        System.out.print(this.arr[idx] + " ");
-    }
-    
-    public  void levelOrder(int idx) {
-        for (int i = 0; i < this.arr.length; i++) {
-            System.out.print(this.arr[i] + " ");
-        }
-        System.out.println();
-    }
-}
 
 public class Practice1 {
-    public static void main(String[] args) {
-        // Test code
-        char[] arr = new char[10];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (char)('A' + i);
+    public static void solution(int n) {
+        int[] binaryTree = new int[(int)Math.pow(2, n)];
+        
+        binaryTree[0] = 0;
+        for (int i = 0; i < (int)Math.pow(2, n -1) - 1; i++) {
+            binaryTree[i * 2 + 1] = 0;
+            binaryTree[i * 2 + 2] = 1;
         }
 
-        BinaryTree bt = new BinaryTree(arr);
-
-        System.out.println("== Preorder ==");
-        bt.preOrder(0);
+        inOrder(binaryTree, 0);
         System.out.println();
 
-        System.out.println("== Inorder ==");
-        bt.inOrder(0);
-        System.out.println();
+    }
+    public static void inOrder(int[] arr, int idx){
+        int left = 2 * idx + 1;
+        int right = 2 * idx + 2;
 
-        System.out.println("== Postorder ==");
-        bt.postOrder(0);
-        System.out.println();
+        if(left < arr.length - 1){
+            inOrder(arr, left);
+        }
 
-        System.out.println("== Levelorder ==");
-        bt.levelOrder(0);
-        System.out.println();
+        System.out.print(arr[idx] + " ");
+
+        if(right < arr.length - 1){
+            inOrder(arr, right);
+        }
+    }
+
+
+    public static void main(String[] args) {
+        // Test code
+        solution(1);
+        solution(2);
+        solution(3);
     }
 }

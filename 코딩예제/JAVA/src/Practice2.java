@@ -1,120 +1,50 @@
 // Practice2
-// 연결 리스트를 이용한 이진 트리 구성, 순회
+// 각각의 에지에 가중치가 있는 포화 이진 트리가 있다.
+// 루트에서 각 리프까지의 경로 길이를 모두 같게 설정하고,
+// 이 때, 모든 가중치들의 총합이 최소가 되도록 하는 프로그램을 작성하세요.
 
-import java.util.LinkedList;
-import java.util.Queue;
+class BinaryTree {
+    int h;
+    int[] arr;
+    int res;
 
-class Node {
-    char data;
-    Node left;
-    Node right;
+    public BinaryTree(int h, int[] w) {
+        this.h = h;
+        arr = new int[(int)Math.pow(2, h + 1)];
+        res = 0;
 
-    public Node(char data, Node left, Node right) {
-        this.data = data;
-        this.left = left;
-        this.right = right;
+        for (int i = 2; i < (int)Math.pow(2, h + 1); i++) {
+            arr[i] = w[i -2];
+        }
+    }
+    public int dfs(int idx, int h){
+        if (this.h == h) {
+            res += arr[idx];
+            return arr[idx];
+        }
+
+        int left = dfs(idx * 2, h + 1);
+        int right = dfs(idx * 2 + 1, h + 1);
+        res += arr[idx] + Math.abs(left -right);
+        return arr[idx] + Math.max(left, right);
     }
 }
-
-class BinaryTree2 {
-    Node head;
-
-    BinaryTree2() {}
-    BinaryTree2(char[] arr) {
-        Node[] nodes = new Node[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            nodes[i] = new Node(arr[i], null, null);
-        }
-
-        for (int i = 0; i < arr.length; i++) {
-            int left = 2 * i + 1;
-            int right = 2 * i + 2;
-
-            if (left < arr.length) {
-                nodes[i].left = nodes[left];
-            }
-
-            if (right < arr.length) {
-                nodes[i].right = nodes[right];
-            }
-
-        }
-        this.head = nodes[0];
-    }
-
-    public void preOrder(Node node) {
-        if (node == null) {
-            return;
-        }
-
-        System.out.print(node.data + " ");
-        preOrder(node.left);
-        preOrder(node.right);
-    }
-
-    public void inOrder(Node node) {
-        if (node == null) {
-            return;
-        }
-
-        inOrder(node.left);
-        System.out.print(node.data + " ");
-        inOrder(node.right);
-    }
-
-    public void postOrder(Node node) {
-        if (node == null) {
-            return;
-        }
-
-        postOrder(node.left);
-        postOrder(node.right);
-        System.out.print(node.data + " ");
-    }
-
-    public void levelOrder(Node node) {
-        Queue<Node> queue = new LinkedList();
-        queue.add(node);
-        while (!queue.isEmpty()) {
-            Node cur = queue.poll();
-
-            System.out.print(cur.data + " ");
-            if (cur.left != null) {
-                queue.offer(cur.left);
-            }
-
-            if (cur.right != null) {
-                queue.offer(cur.right);
-            }
-        }
-    }
-}
-
-
 public class Practice2 {
+    public static void solution(int h, int[] w) {
+        BinaryTree bt = new BinaryTree(h, w);
+        bt.dfs(1, 0);
+        System.out.println(bt.res);
+    }
+
     public static void main(String[] args) {
         // Test code
-        char[] arr = new char[10];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = (char)('A' + i);
-        }
-
-        BinaryTree2 bt = new BinaryTree2(arr);
-
-        System.out.println("== Preorder ==");
-        bt.preOrder(bt.head);
+        int h = 2;  //트리의 높이
+        int[] w = {2, 2, 2, 1, 1, 3}; // 트리에서 가각 에지의 가중치
+        solution(h, w);
         System.out.println();
 
-        System.out.println("== Inorder ==");
-        bt.inOrder(bt.head);
-        System.out.println();
-
-        System.out.println("== Postorder ==");
-        bt.postOrder(bt.head);
-        System.out.println();
-
-        System.out.println("== Levelorder ==");
-        bt.levelOrder(bt.head);
-        System.out.println();
+        h = 3;
+        w = new int[]{1, 2, 1, 3, 2, 4, 1, 1, 1, 1, 1, 1, 1, 1};
+        solution(h, w);
     }
 }
