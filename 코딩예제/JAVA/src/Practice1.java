@@ -1,57 +1,87 @@
-import java.util.LinkedList;
-import java.util.Queue;
+// Practice1
+// 배열을 이용한 이진 트리 구성, 순회
 
-class Doc {
-    int no;
-    int priority;
+class BinaryTree {
+    char[] arr;
 
-    public Doc(int no, int priority) {
-        this.no = no;
-        this.priority = priority;
+    BinaryTree (char[] data){
+        this.arr = data.clone();
+    }
+
+    public void preOrder(int idx){
+        System.out.print(this.arr[idx] + " ");
+
+        int left = 2 * idx + 1;
+        int right = 2 * idx + 2;
+        if(left < this.arr.length){
+            this.preOrder(left);
+        }
+
+        if(right < this.arr.length){
+            this.preOrder(right);
+        }
+    }
+
+    public void inOrder(int idx) {
+        int left = 2 * idx + 1;
+        int right = 2 * idx + 2;
+
+        if(left < this.arr.length){
+            this.inOrder(left);
+        }
+
+        System.out.print(this.arr[idx] + " ");
+
+        if(right < this.arr.length){
+            this.inOrder(right);
+        }
+    }
+    public void postOrder(int idx){
+        int left = 2 * idx + 1;
+        int right = 2 * idx + 2;
+
+        if(left < this.arr.length){
+            this.postOrder(left);
+        }
+
+        if(right < this.arr.length){
+            this.postOrder(right);
+        }
+        System.out.print(this.arr[idx] + " ");
+    }
+    
+    public  void levelOrder(int idx) {
+        for (int i = 0; i < this.arr.length; i++) {
+            System.out.print(this.arr[i] + " ");
+        }
+        System.out.println();
     }
 }
 
 public class Practice1 {
-    public static void solution(int docs, int target, int[] priority) {
-        Queue<Doc> queue = new LinkedList();
-
-        for (int i = 0; i < docs; i++) {
-            queue.add(new Doc(i, priority[i]));
-        }
-
-        int cnt = 1;
-        while (true) {
-            Doc cur = queue.poll();
-
-            Doc[] highP = queue.stream().filter(x -> x.priority > cur.priority).toArray(Doc[]::new);
-
-            if (highP.length > 0) {
-                queue.add(cur);
-            } else {
-                if (cur.no == target) {
-                    System.out.println(cnt);
-                    break;
-                }
-                cnt++;
-            }
-        }
-    }
-
     public static void main(String[] args) {
         // Test code
-        int docs = 1;
-        int target = 0;
-        int[] priority = {5};
-        solution(docs, target, priority);
+        char[] arr = new char[10];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (char)('A' + i);
+        }
 
-        docs = 4;
-        target = 2;
-        priority = new int[]{1, 2, 3, 4};
-        solution(docs, target, priority);
+        BinaryTree bt = new BinaryTree(arr);
 
-        docs = 6;
-        target = 0;
-        priority = new int[]{1, 1, 9, 1, 1, 1};
-        solution(docs, target, priority);
+        System.out.println("== Preorder ==");
+        bt.preOrder(0);
+        System.out.println();
+
+        System.out.println("== Inorder ==");
+        bt.inOrder(0);
+        System.out.println();
+
+        System.out.println("== Postorder ==");
+        bt.postOrder(0);
+        System.out.println();
+
+        System.out.println("== Levelorder ==");
+        bt.levelOrder(0);
+        System.out.println();
     }
 }
