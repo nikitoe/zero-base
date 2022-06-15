@@ -1,59 +1,112 @@
-// Practice1
-// 앞의 BST 삽입, 삭제 코드를 재귀 형태로 구현
+// 비선형 자료구조 - 이진 탐색 트리_2
+// AVL 트리 - 삽입
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-class BinarySearchTree2 {
+class Node {
+    int key;
+    int height;
+    Node left;
+    Node right;
+
+    public Node(int key, Node left, Node right) {
+        this.key = key;
+        this.height = 0;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class AVLTree {
     Node head;
 
-    BinarySearchTree2(int key) {
-        this.head = new Node(key, null, null);
+    public int height(Node node) {
+        if (node == null) {
+            return -1;
+        }
+        return node.height;
     }
 
-    public Node addNodeRecursive(Node cur, int key) {
-        if (cur == null) {
+    public Node rightRotate(Node node) {
+        Node lNode = node.left;
+
+        node.left = lNode.right;
+        lNode.right = node;
+        node.height = Math.max(height(node.left),height(node.right)) + 1;
+        lNode.height = Math.max(height(lNode.left),height(lNode.right)) + 1;
+
+        return lNode;
+    }
+
+    public Node leftRotate(Node node) {
+        Node rNode = node.right;
+
+        node.right = rNode.left;
+        rNode.left = node;
+
+        node.height = Math.max(height(node.left),height(node.right)) + 1;
+        rNode.height = Math.max(height(rNode.left),height(rNode.right)) + 1;
+        return rNode;
+    }
+
+    public Node lrRotate(Node node) {
+        node.left = leftRotate(node.left);
+        return rightRotate(node);
+    }
+
+    public Node rlRotate(Node node) {
+        node.right = rightRotate(node.right);
+        return leftRotate(node);
+    }
+
+    public int getBalance(Node node) {
+        if (node == null) {
+            return 0;
+        }
+
+        return height(node.left) - height(node.right);
+    }
+
+    public void insert(int key) {
+        this.head = insert(this.head ,key);
+    }
+
+    public Node insert(Node node, int key) {
+        if (node == null) {
             return new Node(key, null, null);
         }
-
-        if (key < cur.key) {
-            cur.left = addNodeRecursive(cur.left, key);
-        } else {
-            cur.right = addNodeRecursive(cur.right, key);
+        if (key < node.key) {
+            node.left = insert(node.left, key);
+        }else {
+            node.right = insert(node.right, key);
         }
 
-        return cur;
-    }
+        node.height = Math.max(height(node.left),height(node.right)) + 1;
 
-    public Node removeNodeRecursive(Node cur, int key) {
-        if (cur == null) {
-            return null;
+        int balance = getBalance(node);
+
+        //LL
+        if (balance > 1 && key < node.left.key) {
+            return rightRotate(node);
         }
 
-        if (key < cur.key) {
-            cur.left = removeNodeRecursive(cur.left, key);
-        } else if (key > cur.key) {
-            cur.right = removeNodeRecursive(cur.right, key);
-        } else {
-            if (cur.left == null) {
-                return cur.right;
-            } else if (cur.right == null) {
-                return cur.left;
-            } else {
-                Node predecessor = cur;
-                Node successor = cur.left;
-
-                while (successor.right != null) {
-                    predecessor = successor;
-                    successor = successor.right;
-                }
-
-                predecessor.right = successor.left;
-                cur.key = successor.key;
-            }
+        //RR
+        if(balance < -1 && key > node.right.key){
+            return leftRotate(node);
         }
 
-        return cur;
+        //LR
+        if (balance > 1 && key > node.left.key) {
+            return lrRotate(node);
+        }
+
+        //RL
+        if (balance < -1 && key < node.right.key) {
+            return rlRotate(node);
+        }
+
+        return node;
     }
 
     public void levelOrder(Node node) {
@@ -73,32 +126,29 @@ class BinarySearchTree2 {
         }
         System.out.println();
     }
-
 }
-
 
 public class Practice1 {
     public static void main(String[] args) {
         // Test code
-        // 노드 삽입
-        BinarySearchTree2 bst = new BinarySearchTree2(20);
-        bst.head = bst.addNodeRecursive(bst.head, 10);
-        bst.head = bst.addNodeRecursive(bst.head, 30);
-        bst.head = bst.addNodeRecursive(bst.head, 1);
-        bst.head = bst.addNodeRecursive(bst.head, 15);
-        bst.head = bst.addNodeRecursive(bst.head, 25);
-        bst.head = bst.addNodeRecursive(bst.head, 13);
-        bst.head = bst.addNodeRecursive(bst.head, 35);
-        bst.head = bst.addNodeRecursive(bst.head, 27);
-        bst.head = bst.addNodeRecursive(bst.head, 40);
-        bst.levelOrder(bst.head);
+        AVLTree avl = new AVLTree();
 
-        // 노드 삭제
-        bst.head = bst.removeNodeRecursive(bst.head,40);
-        bst.levelOrder(bst.head);
-        bst.head = bst.removeNodeRecursive(bst.head, 25);
-        bst.levelOrder(bst.head);
-        bst.head = bst.removeNodeRecursive(bst.head, 20);
-        bst.levelOrder(bst.head);
+        // Insert
+        avl.insert(30);
+        avl.insert(20);
+        avl.insert(10);     // LL
+        avl.levelOrder(avl.head);
+
+        avl.insert(40);
+        avl.insert(50);     // RR
+        avl.levelOrder(avl.head);
+
+        avl.insert(5);
+        avl.insert(7);      // LR
+        avl.levelOrder(avl.head);
+
+        avl.insert(60);
+        avl.insert(55);     // RL
+        avl.levelOrder(avl.head);
     }
 }
