@@ -1,61 +1,31 @@
 // Practice3
-// 주어진 BST 에서 두 노드의 합이 target 값이 되는 경우가 있는지 확인하세요.
-// 있으면 true, 없으면 false 반환
+// 인접 리스트 그래프의 DFS, BFS
 
-// 입력 트리: 5, 3, 6, 2, 4, null, 7
-// 결과: true
 
-// 입력 트리: 5,3,6,2,4,null,7
-// 결과: false
-
-import java.util.HashSet;
 
 public class Practice3 {
-    public static void solution(Integer[] data, int target) {
-        BinarySearchTree bst = new BinarySearchTree(data[0]);
-
-        for (int i = 1; i < data.length; i++) {
-            if(data[i] == null) {
-                continue;
-            }
-            bst.addNode(data[i]);
-        }
-
-        HashSet<Integer> set = new HashSet<>();
-
-        boolean result = search(bst.head, set, target);
-        System.out.println(result);
-    }
-
-    public static boolean search(Node node, HashSet<Integer> set, int target) {
-        if (node == null) {
-            return false;
-        }
-
-        if (set.contains(target - node.key)) {
-            return true;
-        }
-
-        set.add(node.key);
-
-        if (search(node.left, set, target)) {
-            return true;
-        }
-
-        if (search(node.right, set, target)) {
-            return true;
-        }
-        return false;
-    }
-
-
     public static void main(String[] args) {
-        Integer[] data = {5, 3, 6, 2, 4, null, 7};
-        int target = 9;
-        solution(data, target);
-
-        data = new Integer[]{5,3,6,2,4,null,7};
-        target = 28;
-        solution(data, target);
+        // Test code
+//        MyGraphList2 graph = new MyGraphList2(7);
+//        graph.addVertex('A');   // 0
+//        graph.addVertex('B');   // 1
+//        graph.addVertex('C');   // 2
+//        graph.addVertex('D');   // 3
+//        graph.addVertex('E');   // 4
+//        graph.addVertex('F');   // 5
+//        graph.addVertex('G');   // 6
+//
+//        graph.addEdge(0, 1);
+//        graph.addEdge(0, 2);
+//        graph.addEdge(0, 3);
+//        graph.addEdge(1, 4);
+//        graph.addEdge(2, 5);
+//        graph.addEdge(3, 4);
+//        graph.addEdge(3, 5);
+//        graph.addEdge(4, 6);
+//        graph.addEdge(5, 6);
+//
+//        graph.dfs(0);
+//        graph.bfs(0);
     }
 }
