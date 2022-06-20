@@ -1,3 +1,4 @@
+package exam01;
 
 public class 신용카드테스트 {
 

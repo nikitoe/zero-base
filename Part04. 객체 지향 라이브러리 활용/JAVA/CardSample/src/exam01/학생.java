@@ -1,3 +1,4 @@
+package exam01;
 
 public class 학생 {
 	public String 이름;

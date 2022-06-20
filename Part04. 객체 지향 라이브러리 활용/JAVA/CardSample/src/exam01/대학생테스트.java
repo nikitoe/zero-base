@@ -1,3 +1,4 @@
+package exam01;
 
 public class 대학생테스트 {
 
