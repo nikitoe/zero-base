@@ -8,6 +8,7 @@ public class 신용카드테스트 {
 		내카드.카드번호 = 1111_2222_3333_4444L;
 		내카드.카드소유주 = "홍길동";
 		
+		System.out.println("========================");
 		System.out.println(내카드.카드번호);
 		System.out.println(내카드.카드소유주);
 		System.out.println(내카드.카드사용누적금액);
@@ -19,6 +20,7 @@ public class 신용카드테스트 {
 		내카드.카드비용지급( 30000 );
 		// 내카드.포인트지급(10000);	// 에러발생(private 함수)
 		
+		System.out.println("========================");
 		System.out.println(내카드.카드번호);
 		System.out.println(내카드.카드소유주);
 		System.out.println(내카드.카드사용누적금액);
