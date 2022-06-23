@@ -1,81 +1,93 @@
-// 비선형 자료구조 - 그래프
-// 인접 행렬을 이용한 그래프 구현
+// 알고리즘 - 정렬_1
 
-class MyGraphMatrix {
-    char[] vertices;
-    int[][] adjMat;
-    int elemCnt;
-
-    public MyGraphMatrix() {}
-    public MyGraphMatrix(int size) {
-        this.vertices = new char[size];
-        this.adjMat = new int[size][size];
-        this.elemCnt = 0;
-    }
-
-    public boolean isFull(){
-        return this.elemCnt == this.vertices.length;
-    }
-
-    public void addVertex(char data){
-        if (isFull()) {
-            System.out.println("Graph is full");
-            return;
-        }
-
-        this.vertices[this.elemCnt++] = data;
-    }
-    // 양방향
-    public void addEdge(int x, int y) {
-        this.adjMat[x][y] = 1;
-        this.adjMat[y][x] = 1;
-    }
-    // 단방향
-    public void addDirectedEdge(int x, int y) {
-        this.adjMat[x][y] = 1;
-    }
-
-    public void deleteEdge(int x, int y) {
-        this.adjMat[x][y] = 0;
-        this.adjMat[y][x] = 0;
-    }
-
-    public void deleteDirectedEdge(int x, int y){
-        this.adjMat[x][y] = 0;
-    }
-
-    public void printAdjacentMatrix(){
-        System.out.print("  ");
-        for(char item : this.vertices) {
-            System.out.print(item + " ");
-        }
-        System.out.println();
-
-        for (int i = 0; i < this.elemCnt; i++) {
-            System.out.print(this.vertices[i] + " ");
-            for (int j = 0; j < this.elemCnt; j++) {
-                System.out.print(this.adjMat[i][j] + " ");
-            }
-            System.out.println(3);
-        }
-    }
-}
+import java.util.Arrays;
 
 public class Main {
+    // 오름차순 기준 정렬 알고리즘
+
+    // 버블 정렬
+    public static void bubbleSort(int[] arr) {
+        for (int i = 1; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i; j++) {
+                if(arr[j] > arr[j + 1]){
+                    int tmp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = tmp;
+                }
+            }
+        }
+
+        for (int i = arr.length - 1; i > 0 ; i--) {
+            for (int j = 0; j < i; j++){
+                if(arr[j] > arr[j + 1]){
+                    int tmp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = tmp;
+                }
+            }
+        }
+    }
+    
+    // 삽입 정렬
+    public static void insertionSort(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            for (int j = i; j > 0; j--) {
+                if(arr[j] < arr[j - 1]){
+                    int tmp = arr[j];
+                    arr[j] = arr[j - 1];
+                    arr[j - 1] = tmp;
+                } else {
+                    break;
+                }
+            }
+        }
+
+    }
+
+    // 선택 정렬
+    private static void selectionSort(int[] arr) {
+        // 최소 기준
+        for (int i = 0; i < arr.length -1; i++) {
+            int min = i;
+            for (int j = i +1; j < arr.length; j++) {
+                if(arr[j] < arr[min]){
+                    min = j;
+                }
+            }
+            int tmp = arr[i];
+            arr[i] = arr[min];
+            arr[min] = tmp;
+        }
+        
+        // 최대 기준
+        for (int i = arr.length - 1; i > 0 ; i--) {
+            int max = i;
+            for (int j = i - 1; j >=0 ; j--) {
+                if(arr[j] >arr[max]){
+                    max = j;
+                }
+
+            }
+            int tmp = arr[i];
+            arr[i] = arr[max];
+            arr[max] = tmp;
+        }
+
+    }
+
     public static void main(String[] args) {
         // Test code
-        MyGraphMatrix graph = new MyGraphMatrix(4);
+        int[] arr = {3, 5, 2, 7, 1, 4};
+        bubbleSort(arr);
+        System.out.println("버블 정렬: " + Arrays.toString(arr));
 
-        graph.addVertex('A');
-        graph.addVertex('B');
-        graph.addVertex('C');
-        graph.addVertex('D');
+        arr = new int[]{3, 5, 2, 7, 1, 4};
+        insertionSort(arr);
+        System.out.println("삽입 정렬: " + Arrays.toString(arr));
 
-        graph.addEdge(0, 1);
-        graph.addEdge(0, 2);
-        graph.addEdge(1, 2);
-        graph.addEdge(1, 3);
-        graph.addEdge(2, 3);
-        graph.printAdjacentMatrix();
+        arr = new int[]{3, 5, 2, 7, 1, 4};
+        selectionSort(arr);
+        System.out.println("선택 정렬: " + Arrays.toString(arr));
+
     }
 }
