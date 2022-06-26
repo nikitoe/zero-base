@@ -14,6 +14,7 @@ public class Sample {
 		Date today = Calendar.getInstance().getTime();
 		System.out.println(today);
 		
+		System.out.println();
 	}
 
 }
