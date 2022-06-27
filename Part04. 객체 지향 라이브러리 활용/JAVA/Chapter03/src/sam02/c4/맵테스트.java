@@ -6,9 +6,9 @@ public class 맵테스트{
 
 	public static void main(String[] args) {
 
-		HashMap<String, String> hm = new HashMap<>();
-		LinkedHashMap<String, String> lhm = new LinkedHashMap<>();
-		TreeMap<String, String> tm = new TreeMap<>();
+		Map<String, String> hm = new HashMap<>();
+		Map<String, String> lhm = new LinkedHashMap<>();
+		Map<String, String> tm = new TreeMap<>();
 		
 		hm.put("B", "B-value");
 		hm.put("A", "A-value");

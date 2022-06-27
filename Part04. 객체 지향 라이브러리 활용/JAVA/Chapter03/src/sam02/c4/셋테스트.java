@@ -3,15 +3,16 @@ package sam02.c4;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 public class 셋테스트{
 
 	public static void main(String[] args) {
 
-		HashSet<String> hs = new HashSet<>();
-		LinkedHashSet<String> lsh = new LinkedHashSet<>();
-		TreeSet<String> ts = new TreeSet<>();
+		Set<String> hs = new HashSet<>();
+		Set<String> lsh = new LinkedHashSet<>();
+		Set<String> ts = new TreeSet<>();
 		
 		// key 값이 중복 안되게
 		hs.add("4");
