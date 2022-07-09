@@ -1,3 +1,5 @@
+package code1;
+
 public class Sample01 {
 
     final int MONTH = 12;

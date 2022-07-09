@@ -1,3 +1,5 @@
+package code1;
+
 public class Sample02 {
 
     String name;

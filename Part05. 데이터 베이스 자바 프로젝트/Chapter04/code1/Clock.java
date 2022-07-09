@@ -1,3 +1,5 @@
+package code1;
+
 public class Clock {
 
    int hour;
